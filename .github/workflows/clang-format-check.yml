@@ -20,3 +20,4 @@ jobs:
           include-regex: ^.*\.((((c|t|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$))|(ino|pde|proto|cu))$
           check-path: ${{ matrix.path }}
           exclude-regex: ^(eigen_matio\.hpp)|(tl_optional.hpp)$
+          fallback-style: Google
