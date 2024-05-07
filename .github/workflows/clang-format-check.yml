@@ -16,7 +16,7 @@ jobs:
       - name: Run clang-format style check for C/C++/Protobuf programs.
         uses: jidicula/clang-format-action@v4.11.0
         with:
-          clang-format-version: "13"
+          clang-format-version: "18"
           include-regex: ^.*\.((((c|t|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$))|(ino|pde|proto|cu))$
           check-path: ${{ matrix.path }}
           exclude-regex: ^(eigen_matio\.hpp)|(tl_optional.hpp)$
