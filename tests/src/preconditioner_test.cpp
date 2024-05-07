@@ -8,11 +8,11 @@
 
 #define PIQP_EIGEN_CHECK_MALLOC
 
-#include "piqp/piqp.hpp"
 #include "piqp/sparse/preconditioner.hpp"
-#include "piqp/utils/random_utils.hpp"
 
 #include "gtest/gtest.h"
+#include "piqp/piqp.hpp"
+#include "piqp/utils/random_utils.hpp"
 
 using namespace piqp;
 
@@ -41,8 +41,10 @@ TEST(RuizEquilibration, DenseScaleUnscale)
     preconditioner.unscale_data(data);
     PIQP_EIGEN_MALLOC_ALLOWED();
 
-    Mat<T> P_utri_orig(dim, dim); P_utri_orig.setZero();
-    Mat<T> P_utri(dim, dim); P_utri.setZero();
+    Mat<T> P_utri_orig(dim, dim);
+    P_utri_orig.setZero();
+    Mat<T> P_utri(dim, dim);
+    P_utri.setZero();
     P_utri_orig.triangularView<Eigen::Upper>() = data_orig.P_utri.triangularView<Eigen::Upper>();
     P_utri.triangularView<Eigen::Upper>() = data.P_utri.triangularView<Eigen::Upper>();
     EXPECT_TRUE(P_utri.isApprox(P_utri_orig, 1e-8));
@@ -101,8 +103,10 @@ TEST(RuizEquilibration, SparseScaleUnscale)
     preconditioner.unscale_data(data);
     PIQP_EIGEN_MALLOC_ALLOWED();
 
-    Mat<T> P_utri_orig(dim, dim); P_utri_orig.setZero();
-    Mat<T> P_utri(dim, dim); P_utri.setZero();
+    Mat<T> P_utri_orig(dim, dim);
+    P_utri_orig.setZero();
+    Mat<T> P_utri(dim, dim);
+    P_utri.setZero();
     EXPECT_TRUE(P_utri.isApprox(P_utri_orig, 1e-8));
     EXPECT_TRUE(data.AT.isApprox(data_orig.AT, 1e-8));
     EXPECT_TRUE(data.GT.isApprox(data_orig.GT, 1e-8));
@@ -141,7 +145,8 @@ TEST(RuizEquilibration, DenseSameIneqScaling)
     dense::Model<T> qp_model_box = rand::dense_strongly_convex_qp<T>(dim, n_eq, n_ineq);
     dense::Data<T> data_box(qp_model_box);
 
-    Mat<T> G(data_box.n_lb + data_box.n_ub, dim); G.setZero();
+    Mat<T> G(data_box.n_lb + data_box.n_ub, dim);
+    G.setZero();
     Vec<T> h(data_box.n_lb + data_box.n_ub);
     for (isize i = 0; i < data_box.n_lb; i++)
     {
@@ -172,7 +177,8 @@ TEST(RuizEquilibration, DenseSameIneqScaling)
 
     Vec<T> z_lb = rand::vector_rand<T>(data_box.n_lb);
     Vec<T> z_ub = rand::vector_rand<T>(data_box.n_ub);
-    Vec<T> z(data_box.n_lb + data_box.n_ub); z << z_lb, z_ub;
+    Vec<T> z(data_box.n_lb + data_box.n_ub);
+    z << z_lb, z_ub;
 
     PIQP_EIGEN_MALLOC_NOT_ALLOWED();
     z_lb = preconditioner_box.scale_dual_lb(z_lb);
@@ -180,7 +186,8 @@ TEST(RuizEquilibration, DenseSameIneqScaling)
     z = preconditioner_ineq.scale_dual_ineq(z);
     PIQP_EIGEN_MALLOC_ALLOWED();
 
-    Vec<T> z_comb(data_box.n_lb + data_box.n_ub); z_comb << z_lb, z_ub;
+    Vec<T> z_comb(data_box.n_lb + data_box.n_ub);
+    z_comb << z_lb, z_ub;
     EXPECT_TRUE(z_comb.isApprox(z, 1e-8));
 }
 
@@ -225,7 +232,8 @@ TEST(RuizEquilibration, SparseSameIneqScaling)
 
     Vec<T> z_lb = rand::vector_rand<T>(data_box.n_lb);
     Vec<T> z_ub = rand::vector_rand<T>(data_box.n_ub);
-    Vec<T> z(data_box.n_lb + data_box.n_ub); z << z_lb, z_ub;
+    Vec<T> z(data_box.n_lb + data_box.n_ub);
+    z << z_lb, z_ub;
 
     PIQP_EIGEN_MALLOC_NOT_ALLOWED();
     z_lb = preconditioner_box.scale_dual_lb(z_lb);
@@ -233,7 +241,8 @@ TEST(RuizEquilibration, SparseSameIneqScaling)
     z = preconditioner_ineq.scale_dual_ineq(z);
     PIQP_EIGEN_MALLOC_ALLOWED();
 
-    Vec<T> z_comb(data_box.n_lb + data_box.n_ub); z_comb << z_lb, z_ub;
+    Vec<T> z_comb(data_box.n_lb + data_box.n_ub);
+    z_comb << z_lb, z_ub;
     EXPECT_TRUE(z_comb.isApprox(z, 1e-8));
 }
 
@@ -264,7 +273,8 @@ TEST(RuizEquilibration, DenseSparseCompare)
     preconditioner_dense.scale_data(data_dense);
     PIQP_EIGEN_MALLOC_ALLOWED();
 
-    Mat<T> P_utri_dense(dim, dim); P_utri_dense.setZero();
+    Mat<T> P_utri_dense(dim, dim);
+    P_utri_dense.setZero();
     P_utri_dense.triangularView<Eigen::Upper>() = data_dense.P_utri.triangularView<Eigen::Upper>();
     EXPECT_TRUE(Mat<T>(data_sparse.P_utri).isApprox(P_utri_dense, 1e-8));
     EXPECT_TRUE(Mat<T>(data_sparse.AT).isApprox(data_dense.AT, 1e-8));

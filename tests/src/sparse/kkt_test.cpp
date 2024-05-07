@@ -8,10 +8,9 @@
 
 #define PIQP_EIGEN_CHECK_MALLOC
 
+#include "gtest/gtest.h"
 #include "piqp/piqp.hpp"
 #include "piqp/utils/random_utils.hpp"
-
-#include "gtest/gtest.h"
 #include "utils.hpp"
 
 using namespace piqp;
@@ -24,8 +23,9 @@ using kkt_types = testing::Types<KKT<T, I, KKTMode::KKT_FULL>,
                                  KKT<T, I, KKTMode::KKT_EQ_ELIMINATED>,
                                  KKT<T, I, KKTMode::KKT_INEQ_ELIMINATED>,
                                  KKT<T, I, KKTMode::KKT_ALL_ELIMINATED>>;
-template <typename T>
-class SparseKKTTest : public ::testing::Test {};
+template<typename T>
+class SparseKKTTest : public ::testing::Test
+{};
 TYPED_TEST_SUITE(SparseKKTTest, kkt_types);
 
 TYPED_TEST(SparseKKTTest, UpdateScalings)
@@ -51,12 +51,18 @@ TYPED_TEST(SparseKKTTest, UpdateScalings)
 
     rho = 0.8;
     delta = 0.2;
-    Vec<T> s(n_ineq); s.setConstant(1);
-    Vec<T> s_lb(dim); s_lb.setConstant(1);
-    Vec<T> s_ub(dim); s_ub.setConstant(1);
-    Vec<T> z(n_ineq); z.setConstant(1);
-    Vec<T> z_lb(dim); z_lb.setConstant(1);
-    Vec<T> z_ub(dim); z_ub.setConstant(1);
+    Vec<T> s(n_ineq);
+    s.setConstant(1);
+    Vec<T> s_lb(dim);
+    s_lb.setConstant(1);
+    Vec<T> s_ub(dim);
+    s_ub.setConstant(1);
+    Vec<T> z(n_ineq);
+    z.setConstant(1);
+    Vec<T> z_lb(dim);
+    z_lb.setConstant(1);
+    Vec<T> z_ub(dim);
+    z_ub.setConstant(1);
 
     PIQP_EIGEN_MALLOC_NOT_ALLOWED();
     kkt.update_scalings(rho, delta, s, s_lb, s_ub, z, z_lb, z_ub);

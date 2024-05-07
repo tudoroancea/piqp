@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <limits>
+
 #include "piqp/piqp.hpp"
 
 int main()
@@ -19,23 +20,28 @@ int main()
     P.insert(0, 0) = 6;
     P.insert(1, 1) = 4;
     P.makeCompressed();
-    Eigen::VectorXd c(n); c << -1, -4;
+    Eigen::VectorXd c(n);
+    c << -1, -4;
 
     Eigen::SparseMatrix<double> A(p, n);
     A.insert(0, 0) = 1;
     A.insert(0, 1) = -2;
     A.makeCompressed();
-    Eigen::VectorXd b(p); b << 1;
+    Eigen::VectorXd b(p);
+    b << 1;
 
     Eigen::SparseMatrix<double> G(m, n);
     G.insert(0, 0) = 1;
     G.insert(0, 1) = -1;
     G.insert(1, 0) = 2;
     G.makeCompressed();
-    Eigen::VectorXd h(m); h << 0.2, -1;
+    Eigen::VectorXd h(m);
+    h << 0.2, -1;
 
-    Eigen::VectorXd x_lb(n); x_lb << -1, -std::numeric_limits<double>::infinity();
-    Eigen::VectorXd x_ub(n); x_ub << 1, std::numeric_limits<double>::infinity();
+    Eigen::VectorXd x_lb(n);
+    x_lb << -1, -std::numeric_limits<double>::infinity();
+    Eigen::VectorXd x_ub(n);
+    x_ub << 1, std::numeric_limits<double>::infinity();
 
     piqp::SparseSolver<double> solver;
     solver.settings().verbose = true;

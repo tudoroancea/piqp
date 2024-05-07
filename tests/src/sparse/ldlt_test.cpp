@@ -8,10 +8,9 @@
 
 #define PIQP_EIGEN_CHECK_MALLOC
 
+#include "gtest/gtest.h"
 #include "piqp/piqp.hpp"
 #include "piqp/utils/random_utils.hpp"
-
-#include "gtest/gtest.h"
 
 using namespace piqp;
 using namespace piqp::sparse;
@@ -76,4 +75,3 @@ TEST(SparseLDLT, Solve)
 
     EXPECT_TRUE(b.isApprox(P_full * x, 1e-8));
 }
-

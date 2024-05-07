@@ -9,8 +9,8 @@
 #ifndef PIQP_TESTS_UTILS_HPP
 #define PIQP_TESTS_UTILS_HPP
 
-#include "piqp/piqp.hpp"
 #include "gtest/gtest.h"
+#include "piqp/piqp.hpp"
 
 template<typename T, unsigned int Mode>
 void assert_dense_triangular_equal(piqp::Mat<T>& A, piqp::Mat<T>& B)
@@ -40,4 +40,4 @@ void assert_sparse_matrices_equal(piqp::SparseMat<T, I>& A, piqp::SparseMat<T, I
               Eigen::Map<piqp::Vec<T>>(B.valuePtr(), B.nonZeros()));
 }
 
-#endif //PIQP_TESTS_UTILS_HPP
+#endif // PIQP_TESTS_UTILS_HPP

@@ -8,11 +8,11 @@
 
 #define PIQP_EIGEN_CHECK_MALLOC
 
-#include "piqp/piqp.hpp"
-#include "piqp/utils/random_utils.hpp"
 #include "piqp/sparse/utils.hpp"
 
 #include "gtest/gtest.h"
+#include "piqp/piqp.hpp"
+#include "piqp/utils/random_utils.hpp"
 #include "utils.hpp"
 
 using namespace piqp;
@@ -59,7 +59,7 @@ TEST(SparseUtils, OrderingAMD)
     // 0 0 6 0
     // 0 0 0 7
     SparseMat<T, I> A(4, 4);
-    std::vector<Eigen::Triplet<T, I>> A_triplets = {{0,0,1}, {0,2,2}, {0,3,3}, {1,1,4}, {1,3,5}, {2,2,6}, {3,3,7}};
+    std::vector<Eigen::Triplet<T, I>> A_triplets = {{0, 0, 1}, {0, 2, 2}, {0, 3, 3}, {1, 1, 4}, {1, 3, 5}, {2, 2, 6}, {3, 3, 7}};
     A.setFromTriplets(A_triplets.begin(), A_triplets.end());
     A.makeCompressed();
 
@@ -71,7 +71,7 @@ TEST(SparseUtils, OrderingAMD)
     Vec<I> Ai_to_Ci = permute_sparse_symmetric_matrix(A, C, ordering);
 
     SparseMat<T, I> C_expect(4, 4);
-    std::vector<Eigen::Triplet<T, I>> C_triplets = {{0,0,4}, {0,3,5}, {1,1,6}, {1,2,2}, {2,2,1}, {2,3,3}, {3,3,7}};
+    std::vector<Eigen::Triplet<T, I>> C_triplets = {{0, 0, 4}, {0, 3, 5}, {1, 1, 6}, {1, 2, 2}, {2, 2, 1}, {2, 3, 3}, {3, 3, 7}};
     C_expect.setFromTriplets(C_triplets.begin(), C_triplets.end());
     C_expect.makeCompressed();
 
@@ -81,8 +81,10 @@ TEST(SparseUtils, OrderingAMD)
     Ai_to_Ci_expect << 3, 0, 2, 1, 5, 4, 6;
     ASSERT_EQ(Ai_to_Ci, Ai_to_Ci_expect);
 
-    Vec<T> x(4); x << 1, 2, 3, 4;
-    Vec<T> x_perm_expect(4); x_perm_expect << 2, 3, 1, 4;
+    Vec<T> x(4);
+    x << 1, 2, 3, 4;
+    Vec<T> x_perm_expect(4);
+    x_perm_expect << 2, 3, 1, 4;
     Vec<T> x_perm = x;
     ordering.perm<T>(x_perm, x);
     ASSERT_EQ(x_perm, x_perm_expect);

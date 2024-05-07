@@ -6,11 +6,11 @@
 // LICENSE file in the root directory of this source tree.
 
 #define GHC_WITH_EXCEPTIONS
-#include "piqp/utils/filesystem.hpp"
 #include "piqp/utils/io_utils.hpp"
-#include "piqp/utils/random_utils.hpp"
 
 #include "gtest/gtest.h"
+#include "piqp/utils/filesystem.hpp"
+#include "piqp/utils/random_utils.hpp"
 #include "utils.hpp"
 
 using namespace piqp;

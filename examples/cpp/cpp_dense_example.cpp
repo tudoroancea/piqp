@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <limits>
+
 #include "piqp/piqp.hpp"
 
 int main()
@@ -15,17 +16,25 @@ int main()
     int p = 1;
     int m = 2;
 
-    Eigen::MatrixXd P(n, n); P << 6, 0, 0, 4;
-    Eigen::VectorXd c(n); c << -1, -4;
+    Eigen::MatrixXd P(n, n);
+    P << 6, 0, 0, 4;
+    Eigen::VectorXd c(n);
+    c << -1, -4;
 
-    Eigen::MatrixXd A(p, n); A << 1, -2;
-    Eigen::VectorXd b(p); b << 1;
+    Eigen::MatrixXd A(p, n);
+    A << 1, -2;
+    Eigen::VectorXd b(p);
+    b << 1;
 
-    Eigen::MatrixXd G(m, n); G << 1, -1, 2, 0;
-    Eigen::VectorXd h(m); h << 0.2, -1;
+    Eigen::MatrixXd G(m, n);
+    G << 1, -1, 2, 0;
+    Eigen::VectorXd h(m);
+    h << 0.2, -1;
 
-    Eigen::VectorXd x_lb(n); x_lb << -1, -std::numeric_limits<double>::infinity();
-    Eigen::VectorXd x_ub(n); x_ub << 1, std::numeric_limits<double>::infinity();
+    Eigen::VectorXd x_lb(n);
+    x_lb << -1, -std::numeric_limits<double>::infinity();
+    Eigen::VectorXd x_ub(n);
+    x_ub << 1, std::numeric_limits<double>::infinity();
 
     piqp::DenseSolver<double> solver;
     solver.settings().verbose = true;
