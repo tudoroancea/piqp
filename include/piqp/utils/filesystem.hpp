@@ -29,4 +29,4 @@ namespace fs = ghc::filesystem;
 
 } // namespace piqp
 
-#endif //PIQP_UTILS_FILESYSTEM_HPP
+#endif // PIQP_UTILS_FILESYSTEM_HPP

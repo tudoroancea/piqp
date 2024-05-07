@@ -65,4 +65,4 @@
 #define piqp_eprint(...) fprintf(stderr, __VA_ARGS__)
 #endif
 
-#endif //PIQP_FWD_HPP
+#endif // PIQP_FWD_HPP

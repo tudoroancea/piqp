@@ -9,7 +9,7 @@
 #define PIQP_PIQP_HPP
 
 #include "piqp/fwd.hpp"
-#include "piqp/typedefs.hpp"
 #include "piqp/solver.hpp"
+#include "piqp/typedefs.hpp"
 
-#endif //PIQP_PIQP_HPP
+#endif // PIQP_PIQP_HPP

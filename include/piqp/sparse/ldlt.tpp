@@ -23,4 +23,4 @@ extern template struct LDLt<common::Scalar, common::StorageIndex>;
 
 } // namespace piqp
 
-#endif //PIQP_SPARSE_LDLT_TPP
+#endif // PIQP_SPARSE_LDLT_TPP

@@ -9,12 +9,12 @@
 #ifndef PIQP_SPARSE_MODEL_HPP
 #define PIQP_SPARSE_MODEL_HPP
 
-#include <limits>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+#include <limits>
 
-#include "piqp/typedefs.hpp"
 #include "piqp/dense/model.hpp"
+#include "piqp/typedefs.hpp"
 #include "piqp/utils/optional.hpp"
 
 namespace piqp
@@ -47,7 +47,7 @@ struct Model
           const optional<CVecRef<T>>& h,
           const optional<CVecRef<T>>& x_lb,
           const optional<CVecRef<T>>& x_ub) noexcept
-      : P(P), c(c)
+    : P(P), c(c)
     {
         isize n = P.rows();
         isize p = A.has_value() ? A->rows() : 0;
@@ -80,4 +80,4 @@ struct Model
 
 } // namespace piqp
 
-#endif //PIQP_SPARSE_MODEL_HPP
+#endif // PIQP_SPARSE_MODEL_HPP

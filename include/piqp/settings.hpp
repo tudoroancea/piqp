@@ -10,6 +10,7 @@
 #define PIQP_SETTINGS_HPP
 
 #include <limits>
+
 #include "piqp/typedefs.hpp"
 
 namespace piqp
@@ -78,4 +79,4 @@ struct Settings
 
 } // namespace piqp
 
-#endif //PIQP_SETTINGS_HPP
+#endif // PIQP_SETTINGS_HPP

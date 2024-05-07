@@ -20,8 +20,8 @@
 #ifndef PIQP_LDLT_NO_PIVOT_HPP
 #define PIQP_LDLT_NO_PIVOT_HPP
 
-#include <iostream>
 #include <Eigen/Dense>
+#include <iostream>
 
 namespace piqp
 {
@@ -29,7 +29,8 @@ namespace piqp
 namespace dense
 {
 
-template<typename MatrixType, int UpLo = Eigen::Lower> class LDLTNoPivot;
+template<typename MatrixType, int UpLo = Eigen::Lower>
+class LDLTNoPivot;
 
 } // namespace dense
 
@@ -71,21 +72,22 @@ struct LDLTNoPivot_Traits;
 }
 
 /** \ingroup Cholesky_Module
-  *
-  * \class LDLTNoPivot
-  *
-  * \brief Robust Cholesky decomposition of a matrix without pivoting
-  *
-  * \tparam MatrixType_ the type of the matrix of which to compute the LDL^T Cholesky decomposition
-  * \tparam UpLo_ the triangular part that will be used for the decomposition: Lower (default) or Upper.
-  *             The other triangular part won't be read.
-  *
-  * Perform a robust Cholesky decomposition of a quasi-definite
-  * matrix \f$ A \f$ such that \f$ A =  LDL^T \f$, where L
-  * is lower triangular with a unit diagonal and D is a diagonal matrix.
-  */
-template<typename MatrixType_, int UpLo_> class LDLTNoPivot
-    : public Eigen::SolverBase<LDLTNoPivot<MatrixType_, UpLo_> >
+ *
+ * \class LDLTNoPivot
+ *
+ * \brief Robust Cholesky decomposition of a matrix without pivoting
+ *
+ * \tparam MatrixType_ the type of the matrix of which to compute the LDL^T Cholesky decomposition
+ * \tparam UpLo_ the triangular part that will be used for the decomposition: Lower (default) or Upper.
+ *             The other triangular part won't be read.
+ *
+ * Perform a robust Cholesky decomposition of a quasi-definite
+ * matrix \f$ A \f$ such that \f$ A =  LDL^T \f$, where L
+ * is lower triangular with a unit diagonal and D is a diagonal matrix.
+ */
+template<typename MatrixType_, int UpLo_>
+class LDLTNoPivot
+    : public Eigen::SolverBase<LDLTNoPivot<MatrixType_, UpLo_>>
 {
 public:
     typedef MatrixType_ MatrixType;
@@ -93,46 +95,50 @@ public:
     friend class Eigen::SolverBase<LDLTNoPivot>;
 
     EIGEN_GENERIC_PUBLIC_INTERFACE(LDLTNoPivot)
-    enum {
+    enum
+    {
         MaxRowsAtCompileTime = MatrixType::MaxRowsAtCompileTime,
         MaxColsAtCompileTime = MatrixType::MaxColsAtCompileTime
     };
     typedef Eigen::Matrix<Scalar, RowsAtCompileTime, 1, 0, MaxRowsAtCompileTime, 1> TmpMatrixType;
 
-    enum {
+    enum
+    {
         PacketSize = Eigen::internal::packet_traits<Scalar>::size,
-        AlignmentMask = int(PacketSize)-1,
+        AlignmentMask = int(PacketSize) - 1,
         UpLo = UpLo_
     };
 
     typedef internal::LDLTNoPivot_Traits<MatrixType, UpLo> Traits;
 
     /**
-      * \brief Default Constructor.
-      *
-      * The default constructor is useful in cases in which the user intends to
-      * perform decompositions via LDLTNoPivot::compute(const MatrixType&).
-      */
+     * \brief Default Constructor.
+     *
+     * The default constructor is useful in cases in which the user intends to
+     * perform decompositions via LDLTNoPivot::compute(const MatrixType&).
+     */
     LDLTNoPivot()
         : m_matrix(),
           m_l1_norm(0),
           m_isInitialized(false),
           m_info(Eigen::NumericalIssue)
-    {}
+    {
+    }
 
     /** \brief Default Constructor with memory preallocation
-      *
-      * Like the default constructor but with preallocation of the internal data
-      * according to the specified problem \a size.
-      * \sa LDLTNoPivot()
-      */
+     *
+     * Like the default constructor but with preallocation of the internal data
+     * according to the specified problem \a size.
+     * \sa LDLTNoPivot()
+     */
     explicit LDLTNoPivot(Eigen::Index size)
         : m_matrix(size, size),
           m_l1_norm(0),
           m_temporary(size),
           m_isInitialized(false),
           m_info(Eigen::NumericalIssue)
-    {}
+    {
+    }
 
     template<typename InputType>
     explicit LDLTNoPivot(const Eigen::EigenBase<InputType>& matrix)
@@ -146,12 +152,12 @@ public:
     }
 
     /** \brief Constructs a LDLTNoPivot factorization from a given matrix
-      *
-      * This overloaded constructor is provided for \link InplaceDecomposition inplace decomposition \endlink when
-      * \c MatrixType is a Eigen::Ref.
-      *
-      * \sa LDLTNoPivot(const EigenBase&)
-      */
+     *
+     * This overloaded constructor is provided for \link InplaceDecomposition inplace decomposition \endlink when
+     * \c MatrixType is a Eigen::Ref.
+     *
+     * \sa LDLTNoPivot(const EigenBase&)
+     */
     template<typename InputType>
     explicit LDLTNoPivot(Eigen::EigenBase<InputType>& matrix)
         : m_matrix(matrix.derived()),
@@ -188,26 +194,26 @@ public:
 
 #ifdef EIGEN_PARSED_BY_DOXYGEN
     /** \returns the solution x of \f$ A x = b \f$ using the current decomposition of A.
-      *
-      * Since this LDLTNoPivot class assumes anyway that the matrix A is invertible, the solution
-      * theoretically exists and is unique regardless of b.
-      *
-      * \sa solveInPlace()
-      */
+     *
+     * Since this LDLTNoPivot class assumes anyway that the matrix A is invertible, the solution
+     * theoretically exists and is unique regardless of b.
+     *
+     * \sa solveInPlace()
+     */
     template<typename Rhs>
     inline const Solve<LDLTNoPivot, Rhs>
     solve(const MatrixBase<Rhs>& b) const;
 #endif
 
     template<typename Derived>
-    void solveInPlace(Eigen::MatrixBase<Derived> &bAndX) const;
+    void solveInPlace(Eigen::MatrixBase<Derived>& bAndX) const;
 
     template<typename InputType>
     LDLTNoPivot& compute(const Eigen::EigenBase<InputType>& matrix);
 
     /** \returns an estimate of the reciprocal condition number of the matrix of
-      *  which \c *this is the LDLT decomposition.
-      */
+     *  which \c *this is the LDLT decomposition.
+     */
     RealScalar rcond() const
     {
         eigen_assert(m_isInitialized && "LDLTNoPivot is not initialized.");
@@ -215,7 +221,7 @@ public:
     }
 
     /** \returns the LDLT decomposition matrix
-      */
+     */
     inline const MatrixType& matrixLDLT() const
     {
         eigen_assert(m_isInitialized && "LDLTNoPivot is not initialized.");
@@ -226,10 +232,10 @@ public:
 
 
     /** \brief Reports whether previous computation was successful.
-      *
-      * \returns \c Success if computation was successful,
-      *          \c NumericalIssue if the matrix.appears not to be positive definite.
-      */
+     *
+     * \returns \c Success if computation was successful,
+     *          \c NumericalIssue if the matrix.appears not to be positive definite.
+     */
     Eigen::ComputationInfo info() const
     {
         eigen_assert(m_isInitialized && "LDLTNoPivot is not initialized.");
@@ -237,10 +243,10 @@ public:
     }
 
     /** \returns the adjoint of \c *this, that is, a const reference to the decomposition itself as the underlying matrix is self-adjoint.
-      *
-      * This method is provided for compatibility with other matrix decompositions, thus enabling generic code such as:
-      * \code x = decomposition.adjoint().solve(b) \endcode
-      */
+     *
+     * This method is provided for compatibility with other matrix decompositions, thus enabling generic code such as:
+     * \code x = decomposition.adjoint().solve(b) \endcode
+     */
     const LDLTNoPivot& adjoint() const EIGEN_NOEXCEPT { return *this; }
 
     inline Eigen::Index rows() const EIGEN_NOEXCEPT { return m_matrix.rows(); }
@@ -248,22 +254,21 @@ public:
 
 #ifndef EIGEN_PARSED_BY_DOXYGEN
     template<typename RhsType, typename DstType>
-    void _solve_impl(const RhsType &rhs, DstType &dst) const;
+    void _solve_impl(const RhsType& rhs, DstType& dst) const;
 
     template<bool Conjugate, typename RhsType, typename DstType>
-    void _solve_impl_transposed(const RhsType &rhs, DstType &dst) const;
+    void _solve_impl_transposed(const RhsType& rhs, DstType& dst) const;
 #endif
 
 protected:
-
     EIGEN_STATIC_ASSERT(!Eigen::NumTraits<Scalar>::IsInteger, THIS_FUNCTION_IS_NOT_FOR_INTEGER_NUMERIC_TYPES)
 
     /** \internal
-      * Used to compute and store the Cholesky decomposition A = L D L^* = U^* D U.
-      * The strict upper part is used during the decomposition, the strict lower
-      * part correspond to the coefficients of L (its diagonal is equal to 1 and
-      * is not stored), and the diagonal entries correspond to D.
-      */
+     * Used to compute and store the Cholesky decomposition A = L D L^* = U^* D U.
+     * The strict upper part is used during the decomposition, the strict lower
+     * part correspond to the coefficients of L (its diagonal is equal to 1 and
+     * is not stored), and the diagonal entries correspond to D.
+     */
     MatrixType m_matrix;
     RealScalar m_l1_norm;
     TmpMatrixType m_temporary;
@@ -271,11 +276,14 @@ protected:
     Eigen::ComputationInfo m_info;
 };
 
-namespace internal {
+namespace internal
+{
 
-template<int UpLo> struct ldlt_no_pivot_inplace;
+template<int UpLo>
+struct ldlt_no_pivot_inplace;
 
-template<> struct ldlt_no_pivot_inplace<Eigen::Lower>
+template<>
+struct ldlt_no_pivot_inplace<Eigen::Lower>
 {
     template<typename MatrixType, typename Workspace>
     static Eigen::Index unblocked(MatrixType& mat, Workspace& temp)
@@ -356,7 +364,8 @@ template<> struct ldlt_no_pivot_inplace<Eigen::Lower>
     }
 };
 
-template<> struct ldlt_no_pivot_inplace<Eigen::Upper>
+template<>
+struct ldlt_no_pivot_inplace<Eigen::Upper>
 {
     template<typename MatrixType, typename Workspace>
     static EIGEN_STRONG_INLINE Eigen::Index unblocked(MatrixType& mat, Workspace& temp)
@@ -372,7 +381,8 @@ template<> struct ldlt_no_pivot_inplace<Eigen::Upper>
     }
 };
 
-template<typename MatrixType> struct LDLTNoPivot_Traits<MatrixType,Eigen::Lower>
+template<typename MatrixType>
+struct LDLTNoPivot_Traits<MatrixType, Eigen::Lower>
 {
     typedef const Eigen::TriangularView<const MatrixType, Eigen::UnitLower> MatrixL;
     typedef const Eigen::TriangularView<const typename MatrixType::AdjointReturnType, Eigen::UnitUpper> MatrixU;
@@ -380,7 +390,8 @@ template<typename MatrixType> struct LDLTNoPivot_Traits<MatrixType,Eigen::Lower>
     static inline MatrixU getU(const MatrixType& m) { return MatrixU(m.adjoint()); }
 };
 
-template<typename MatrixType> struct LDLTNoPivot_Traits<MatrixType,Eigen::Upper>
+template<typename MatrixType>
+struct LDLTNoPivot_Traits<MatrixType, Eigen::Upper>
 {
     typedef const Eigen::TriangularView<const typename MatrixType::AdjointReturnType, Eigen::UnitLower> MatrixL;
     typedef const Eigen::TriangularView<const MatrixType, Eigen::UnitUpper> MatrixU;
@@ -391,10 +402,10 @@ template<typename MatrixType> struct LDLTNoPivot_Traits<MatrixType,Eigen::Upper>
 } // end namespace internal
 
 /** Compute / recompute the LDLT decomposition A = L D L^* = U^* D U of \a matrix
-  */
+ */
 template<typename MatrixType, int UpLo_>
 template<typename InputType>
-LDLTNoPivot<MatrixType,UpLo_>& LDLTNoPivot<MatrixType,UpLo_>::compute(const Eigen::EigenBase<InputType>& a)
+LDLTNoPivot<MatrixType, UpLo_>& LDLTNoPivot<MatrixType, UpLo_>::compute(const Eigen::EigenBase<InputType>& a)
 {
     eigen_assert(a.rows() == a.cols());
     const Eigen::Index size = a.rows();
@@ -405,7 +416,8 @@ LDLTNoPivot<MatrixType,UpLo_>& LDLTNoPivot<MatrixType,UpLo_>::compute(const Eige
     // Compute matrix L1 norm = max abs column sum.
     m_l1_norm = RealScalar(0);
     // TODO move this code to SelfAdjointView
-    for (Eigen::Index col = 0; col < size; ++col) {
+    for (Eigen::Index col = 0; col < size; ++col)
+    {
         RealScalar abs_col_sum;
         if (UpLo_ == Eigen::Lower)
             abs_col_sum = m_matrix.col(col).tail(size - col).template lpNorm<1>() + m_matrix.row(col).head(col).template lpNorm<1>();
@@ -424,16 +436,16 @@ LDLTNoPivot<MatrixType,UpLo_>& LDLTNoPivot<MatrixType,UpLo_>::compute(const Eige
 }
 
 #ifndef EIGEN_PARSED_BY_DOXYGEN
-template<typename MatrixType_,int UpLo_>
+template<typename MatrixType_, int UpLo_>
 template<typename RhsType, typename DstType>
-void LDLTNoPivot<MatrixType_,UpLo_>::_solve_impl(const RhsType &rhs, DstType &dst) const
+void LDLTNoPivot<MatrixType_, UpLo_>::_solve_impl(const RhsType& rhs, DstType& dst) const
 {
     _solve_impl_transposed<true>(rhs, dst);
 }
 
-template<typename MatrixType_,int UpLo_>
+template<typename MatrixType_, int UpLo_>
 template<bool Conjugate, typename RhsType, typename DstType>
-void LDLTNoPivot<MatrixType_,UpLo_>::_solve_impl_transposed(const RhsType &rhs, DstType &dst) const
+void LDLTNoPivot<MatrixType_, UpLo_>::_solve_impl_transposed(const RhsType& rhs, DstType& dst) const
 {
     dst = rhs;
 
@@ -453,19 +465,19 @@ void LDLTNoPivot<MatrixType_,UpLo_>::_solve_impl_transposed(const RhsType &rhs, 
 #endif
 
 /** \internal use x = ldlt_no_pivot_object.solve(x);
-  *
-  * This is the \em in-place version of solve().
-  *
-  * \param bAndX represents both the right-hand side matrix b and result x.
-  *
-  * \returns true always! If you need to check for existence of solutions, use another decomposition like LU, QR, or SVD.
-  *
-  * This version avoids a copy when the right hand side matrix b is not
-  * needed anymore.
-  */
+ *
+ * This is the \em in-place version of solve().
+ *
+ * \param bAndX represents both the right-hand side matrix b and result x.
+ *
+ * \returns true always! If you need to check for existence of solutions, use another decomposition like LU, QR, or SVD.
+ *
+ * This version avoids a copy when the right hand side matrix b is not
+ * needed anymore.
+ */
 template<typename MatrixType, int UpLo_>
 template<typename Derived>
-void LDLTNoPivot<MatrixType,UpLo_>::solveInPlace(Eigen::MatrixBase<Derived> &bAndX) const
+void LDLTNoPivot<MatrixType, UpLo_>::solveInPlace(Eigen::MatrixBase<Derived>& bAndX) const
 {
     eigen_assert(m_isInitialized && "LDLTNoPivot is not initialized.");
     eigen_assert(m_matrix.rows() == bAndX.rows());
@@ -476,11 +488,11 @@ void LDLTNoPivot<MatrixType,UpLo_>::solveInPlace(Eigen::MatrixBase<Derived> &bAn
  * i.e., it returns the product: L L^*.
  * This function is provided for debug purpose. */
 template<typename MatrixType, int UpLo_>
-MatrixType LDLTNoPivot<MatrixType,UpLo_>::reconstructedMatrix() const
+MatrixType LDLTNoPivot<MatrixType, UpLo_>::reconstructedMatrix() const
 {
     eigen_assert(m_isInitialized && "LDLTNoPivot is not initialized.");
     const Eigen::Index size = m_matrix.rows();
-    MatrixType res(size,size);
+    MatrixType res(size, size);
 
     res.setIdentity();
 
@@ -501,4 +513,4 @@ MatrixType LDLTNoPivot<MatrixType,UpLo_>::reconstructedMatrix() const
 #include "piqp/dense/ldlt_no_pivot.tpp"
 #endif
 
-#endif //PIQP_LDLT_NO_PIVOT_HPP
+#endif // PIQP_LDLT_NO_PIVOT_HPP

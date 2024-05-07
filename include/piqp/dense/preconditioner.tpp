@@ -23,4 +23,4 @@ extern template class RuizEquilibration<common::Scalar>;
 
 } // namespace piqp
 
-#endif //PIQP_DENSE_PRECONDITIONER_TPP
+#endif // PIQP_DENSE_PRECONDITIONER_TPP

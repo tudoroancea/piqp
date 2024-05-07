@@ -23,7 +23,8 @@ class NaturalOrdering
 {
 public:
     template<typename T>
-    void init(PIQP_MAYBE_UNUSED const SparseMat<T, I>& A) {}
+    void init(PIQP_MAYBE_UNUSED const SparseMat<T, I>& A)
+    {}
 
     EIGEN_STRONG_INLINE I operator[](isize idx) const
     {
@@ -115,7 +116,8 @@ public:
     {
         isize n = x.rows();
         eigen_assert(n == b.rows() && n == P.rows() && "vector dimension missmatch!");
-        for (isize j = 0 ; j < n; j++) {
+        for (isize j = 0; j < n; j++)
+        {
             x[P[j]] = b[j];
         }
     }
@@ -129,4 +131,4 @@ public:
 #include "piqp/sparse/ordering.tpp"
 #endif
 
-#endif //PIQP_SPARSE_ORDERING_HPP
+#endif // PIQP_SPARSE_ORDERING_HPP

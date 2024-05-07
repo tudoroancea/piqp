@@ -23,4 +23,4 @@ extern template struct Data<common::Scalar>;
 
 } // namespace piqp
 
-#endif //PIQP_DENSE_DATA_TPP
+#endif // PIQP_DENSE_DATA_TPP

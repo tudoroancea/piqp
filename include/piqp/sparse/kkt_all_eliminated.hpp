@@ -9,8 +9,8 @@
 #ifndef PIQP_SPARSE_KKT_ALL_ELIMINATED_HPP
 #define PIQP_SPARSE_KKT_ALL_ELIMINATED_HPP
 
-#include "piqp/typedefs.hpp"
 #include "piqp/kkt_fwd.hpp"
+#include "piqp/typedefs.hpp"
 
 namespace piqp
 {
@@ -255,4 +255,4 @@ struct KKTImpl<Derived, T, I, KKTMode::KKT_ALL_ELIMINATED>
 
 } // namespace piqp
 
-#endif //PIQP_SPARSE_KKT_ALL_ELIMINATED_HPP
+#endif // PIQP_SPARSE_KKT_ALL_ELIMINATED_HPP

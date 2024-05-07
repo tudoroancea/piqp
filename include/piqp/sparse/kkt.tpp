@@ -24,4 +24,4 @@ extern template struct KKT<common::Scalar, common::StorageIndex>;
 
 } // namespace piqp
 
-#endif //PIQP_SPARSE_KKT_TPP
+#endif // PIQP_SPARSE_KKT_TPP

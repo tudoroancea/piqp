@@ -22,4 +22,4 @@ extern template class SparseSolver<common::Scalar>;
 
 } // namespace piqp
 
-#endif //PIQP_SOLVER_TPP
+#endif // PIQP_SOLVER_TPP

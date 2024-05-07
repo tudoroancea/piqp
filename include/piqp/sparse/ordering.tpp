@@ -23,4 +23,4 @@ extern template class AMDOrdering<common::StorageIndex>;
 
 } // namespace piqp
 
-#endif //PIQP_SPARSE_ORDERING_TPP
+#endif // PIQP_SPARSE_ORDERING_TPP

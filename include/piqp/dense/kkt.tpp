@@ -23,4 +23,4 @@ extern template struct KKT<common::Scalar>;
 
 } // namespace piqp
 
-#endif //PIQP_DENSE_KKT_TPP
+#endif // PIQP_DENSE_KKT_TPP

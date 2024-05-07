@@ -38,4 +38,4 @@ struct KKTImpl;
 
 } // namespace piqp
 
-#endif //PIQP_KKT_FWD_HPP
+#endif // PIQP_KKT_FWD_HPP

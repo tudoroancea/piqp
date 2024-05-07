@@ -13,9 +13,9 @@
 #include <Eigen/Sparse>
 
 #include "piqp/fwd.hpp"
-#include "piqp/typedefs.hpp"
 #include "piqp/sparse/data.hpp"
 #include "piqp/sparse/utils.hpp"
+#include "piqp/typedefs.hpp"
 
 namespace piqp
 {
@@ -87,15 +87,14 @@ public:
             delta_lb.setConstant(1);
             delta_ub.setConstant(1);
 
-            Vec<T>& delta_iter = delta_inv; // we use the memory of delta_inv as temporary storage
+            Vec<T>& delta_iter = delta_inv;       // we use the memory of delta_inv as temporary storage
             Vec<T>& delta_iter_lb = delta_lb_inv; // we use the memory of delta_lb_inv as temporary storage
             Vec<T>& delta_iter_ub = delta_ub_inv; // we use the memory of delta_ub_inv as temporary storage
             delta_iter.setZero();
-            for (isize i = 0; i < max_iter && (std::max)({
-                    (1 - delta_iter.array()).matrix().template lpNorm<Eigen::Infinity>(),
-                    (1 - delta_iter_lb.head(n_lb).array()).matrix().template lpNorm<Eigen::Infinity>(),
-                    (1 - delta_iter_ub.head(n_ub).array()).matrix().template lpNorm<Eigen::Infinity>()
-                }) > epsilon; i++)
+            for (isize i = 0; i < max_iter && (std::max)({(1 - delta_iter.array()).matrix().template lpNorm<Eigen::Infinity>(),
+                                                          (1 - delta_iter_lb.head(n_lb).array()).matrix().template lpNorm<Eigen::Infinity>(),
+                                                          (1 - delta_iter_ub.head(n_ub).array()).matrix().template lpNorm<Eigen::Infinity>()}) > epsilon;
+                 i++)
             {
                 delta_iter.setZero();
 
@@ -465,7 +464,8 @@ protected:
         if (d < min_scaling)
         {
             d = T(1);
-        } else if (d > max_scaling)
+        }
+        else if (d > max_scaling)
         {
             d = max_scaling;
         }
@@ -487,82 +487,160 @@ public:
     inline T unscale_cost(T cost) const { return cost; }
 
     template<typename Derived>
-    inline auto& scale_primal(const Eigen::MatrixBase<Derived>& x) const { return x; }
+    inline auto& scale_primal(const Eigen::MatrixBase<Derived>& x) const
+    {
+        return x;
+    }
 
     template<typename Derived>
-    inline auto& unscale_primal(const Eigen::MatrixBase<Derived>& x) const { return x; }
+    inline auto& unscale_primal(const Eigen::MatrixBase<Derived>& x) const
+    {
+        return x;
+    }
 
     template<typename Derived>
-    inline auto& scale_dual_eq(const Eigen::MatrixBase<Derived>& y) const { return y; }
+    inline auto& scale_dual_eq(const Eigen::MatrixBase<Derived>& y) const
+    {
+        return y;
+    }
 
     template<typename Derived>
-    inline auto& unscale_dual_eq(const Eigen::MatrixBase<Derived>& y) const { return y; }
+    inline auto& unscale_dual_eq(const Eigen::MatrixBase<Derived>& y) const
+    {
+        return y;
+    }
 
     template<typename Derived>
-    inline auto& scale_dual_ineq(const Eigen::MatrixBase<Derived>& z) const { return z; }
+    inline auto& scale_dual_ineq(const Eigen::MatrixBase<Derived>& z) const
+    {
+        return z;
+    }
 
     template<typename Derived>
-    inline auto& unscale_dual_ineq(const Eigen::MatrixBase<Derived>& z) const { return z; }
+    inline auto& unscale_dual_ineq(const Eigen::MatrixBase<Derived>& z) const
+    {
+        return z;
+    }
 
     template<typename Derived>
-    inline auto& scale_dual_lb(const Eigen::MatrixBase<Derived>& z_lb) const { return z_lb; }
+    inline auto& scale_dual_lb(const Eigen::MatrixBase<Derived>& z_lb) const
+    {
+        return z_lb;
+    }
 
     template<typename Derived>
-    inline auto& unscale_dual_lb(const Eigen::MatrixBase<Derived>& z_lb) const { return z_lb; }
+    inline auto& unscale_dual_lb(const Eigen::MatrixBase<Derived>& z_lb) const
+    {
+        return z_lb;
+    }
 
     template<typename Derived>
-    inline auto& scale_dual_ub(const Eigen::MatrixBase<Derived>& z_ub) const { return z_ub; }
+    inline auto& scale_dual_ub(const Eigen::MatrixBase<Derived>& z_ub) const
+    {
+        return z_ub;
+    }
 
     template<typename Derived>
-    inline auto& unscale_dual_ub(const Eigen::MatrixBase<Derived>& z_ub) const { return z_ub; }
+    inline auto& unscale_dual_ub(const Eigen::MatrixBase<Derived>& z_ub) const
+    {
+        return z_ub;
+    }
 
     template<typename Derived>
-    inline auto& scale_slack_ineq(const Eigen::MatrixBase<Derived>& s) const { return s; }
+    inline auto& scale_slack_ineq(const Eigen::MatrixBase<Derived>& s) const
+    {
+        return s;
+    }
 
     template<typename Derived>
-    inline auto& unscale_slack_ineq(const Eigen::MatrixBase<Derived>& s) const { return s; }
+    inline auto& unscale_slack_ineq(const Eigen::MatrixBase<Derived>& s) const
+    {
+        return s;
+    }
 
     template<typename Derived>
-    inline auto& scale_slack_lb(const Eigen::MatrixBase<Derived>& s_lb) const { return s_lb; }
+    inline auto& scale_slack_lb(const Eigen::MatrixBase<Derived>& s_lb) const
+    {
+        return s_lb;
+    }
 
     template<typename Derived>
-    inline auto& unscale_slack_lb(const Eigen::MatrixBase<Derived>& s_lb) const { return s_lb; }
+    inline auto& unscale_slack_lb(const Eigen::MatrixBase<Derived>& s_lb) const
+    {
+        return s_lb;
+    }
 
     template<typename Derived>
-    inline auto& scale_slack_ub(const Eigen::MatrixBase<Derived>& s_ub) const { return s_ub; }
+    inline auto& scale_slack_ub(const Eigen::MatrixBase<Derived>& s_ub) const
+    {
+        return s_ub;
+    }
 
     template<typename Derived>
-    inline auto& unscale_slack_ub(const Eigen::MatrixBase<Derived>& s_ub) const { return s_ub; }
+    inline auto& unscale_slack_ub(const Eigen::MatrixBase<Derived>& s_ub) const
+    {
+        return s_ub;
+    }
 
     template<typename Derived>
-    inline auto& scale_primal_res_eq(const Eigen::MatrixBase<Derived>& p_res_eq) const { return p_res_eq; }
+    inline auto& scale_primal_res_eq(const Eigen::MatrixBase<Derived>& p_res_eq) const
+    {
+        return p_res_eq;
+    }
 
     template<typename Derived>
-    inline auto& unscale_primal_res_eq(const Eigen::MatrixBase<Derived>& p_res_eq) const { return p_res_eq; }
+    inline auto& unscale_primal_res_eq(const Eigen::MatrixBase<Derived>& p_res_eq) const
+    {
+        return p_res_eq;
+    }
 
     template<typename Derived>
-    inline auto& scale_primal_res_ineq(const Eigen::MatrixBase<Derived>& p_res_in) const { return p_res_in; }
+    inline auto& scale_primal_res_ineq(const Eigen::MatrixBase<Derived>& p_res_in) const
+    {
+        return p_res_in;
+    }
 
     template<typename Derived>
-    inline auto& unscale_primal_res_ineq(const Eigen::MatrixBase<Derived>& p_res_in) const { return p_res_in; }
+    inline auto& unscale_primal_res_ineq(const Eigen::MatrixBase<Derived>& p_res_in) const
+    {
+        return p_res_in;
+    }
 
     template<typename Derived>
-    inline auto& scale_primal_res_lb(const Eigen::MatrixBase<Derived>& p_res_lb) const { return p_res_lb; }
+    inline auto& scale_primal_res_lb(const Eigen::MatrixBase<Derived>& p_res_lb) const
+    {
+        return p_res_lb;
+    }
 
     template<typename Derived>
-    inline auto& unscale_primal_res_lb(const Eigen::MatrixBase<Derived>& p_res_lb) const { return p_res_lb; }
+    inline auto& unscale_primal_res_lb(const Eigen::MatrixBase<Derived>& p_res_lb) const
+    {
+        return p_res_lb;
+    }
 
     template<typename Derived>
-    inline auto& scale_primal_res_ub(const Eigen::MatrixBase<Derived>& p_res_ub) const { return p_res_ub; }
+    inline auto& scale_primal_res_ub(const Eigen::MatrixBase<Derived>& p_res_ub) const
+    {
+        return p_res_ub;
+    }
 
     template<typename Derived>
-    inline auto& unscale_primal_res_ub(const Eigen::MatrixBase<Derived>& p_res_ub) const { return p_res_ub; }
+    inline auto& unscale_primal_res_ub(const Eigen::MatrixBase<Derived>& p_res_ub) const
+    {
+        return p_res_ub;
+    }
 
     template<typename Derived>
-    inline auto& scale_dual_res(const Eigen::MatrixBase<Derived>& d_res) const { return d_res; }
+    inline auto& scale_dual_res(const Eigen::MatrixBase<Derived>& d_res) const
+    {
+        return d_res;
+    }
 
     template<typename Derived>
-    inline auto& unscale_dual_res(const Eigen::MatrixBase<Derived>& d_res) const { return d_res; }
+    inline auto& unscale_dual_res(const Eigen::MatrixBase<Derived>& d_res) const
+    {
+        return d_res;
+    }
 };
 
 } // namespace sparse
@@ -573,4 +651,4 @@ public:
 #include "piqp/sparse/preconditioner.tpp"
 #endif
 
-#endif //PIQP_SPARSE_PRECONDITIONER_HPP
+#endif // PIQP_SPARSE_PRECONDITIONER_HPP

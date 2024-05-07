@@ -97,4 +97,4 @@ struct Result
 
 } // namespace piqp
 
-#endif //PIQP_RESULTS_HPP
+#endif // PIQP_RESULTS_HPP

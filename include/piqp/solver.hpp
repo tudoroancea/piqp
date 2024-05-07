@@ -8,22 +8,21 @@
 
 #ifndef PIQP_SOLVER_HPP
 #define PIQP_SOLVER_HPP
-
-#include <cstdio>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+#include <cstdio>
 
-#include "piqp/fwd.hpp"
 #include "piqp/common.hpp"
-#include "piqp/timer.hpp"
+#include "piqp/dense/data.hpp"
+#include "piqp/dense/kkt.hpp"
+#include "piqp/dense/preconditioner.hpp"
+#include "piqp/fwd.hpp"
 #include "piqp/results.hpp"
 #include "piqp/settings.hpp"
-#include "piqp/dense/data.hpp"
-#include "piqp/dense/preconditioner.hpp"
-#include "piqp/dense/kkt.hpp"
 #include "piqp/sparse/data.hpp"
-#include "piqp/sparse/preconditioner.hpp"
 #include "piqp/sparse/kkt.hpp"
+#include "piqp/sparse/preconditioner.hpp"
+#include "piqp/timer.hpp"
 #include "piqp/utils/optional.hpp"
 
 namespace piqp
@@ -82,7 +81,8 @@ protected:
     Vec<T> ds_ub;
 
 public:
-    SolverBase() : m_kkt(m_data, m_settings) {};
+    SolverBase()
+    : m_kkt(m_data, m_settings) {};
 
     ~SolverBase() {};
 
@@ -173,31 +173,72 @@ protected:
         m_data.p = A.has_value() ? A->rows() : 0;
         m_data.m = G.has_value() ? G->rows() : 0;
 
-        if (P.rows() != m_data.n || P.cols() != m_data.n) { piqp_eprint("P must be square\n"); return; }
-        if (A.has_value() && (A->rows() != m_data.p || A->cols() != m_data.n)) { piqp_eprint("A must have correct dimensions\n"); return; }
-        if (G.has_value() && (G->rows() != m_data.m || G->cols() != m_data.n)) { piqp_eprint("G must have correct dimensions\n"); return; }
-        if (c.size() != m_data.n) { piqp_eprint("c must have correct dimensions\n"); return; }
-        if ((b.has_value() && b->size() != m_data.p) || (!b.has_value() && m_data.p > 0)) { piqp_eprint("b must have correct dimensions\n"); return; }
-        if ((h.has_value() && h->size() != m_data.m) || (!h.has_value() && m_data.m > 0)) { piqp_eprint("h must have correct dimensions\n"); return; }
-        if (x_lb.has_value() && x_lb->size() != m_data.n) { piqp_eprint("x_lb must have correct dimensions\n"); return; }
-        if (x_ub.has_value() && x_ub->size() != m_data.n) { piqp_eprint("x_ub must have correct dimensions\n"); return; }
+        if (P.rows() != m_data.n || P.cols() != m_data.n)
+        {
+            piqp_eprint("P must be square\n");
+            return;
+        }
+        if (A.has_value() && (A->rows() != m_data.p || A->cols() != m_data.n))
+        {
+            piqp_eprint("A must have correct dimensions\n");
+            return;
+        }
+        if (G.has_value() && (G->rows() != m_data.m || G->cols() != m_data.n))
+        {
+            piqp_eprint("G must have correct dimensions\n");
+            return;
+        }
+        if (c.size() != m_data.n)
+        {
+            piqp_eprint("c must have correct dimensions\n");
+            return;
+        }
+        if ((b.has_value() && b->size() != m_data.p) || (!b.has_value() && m_data.p > 0))
+        {
+            piqp_eprint("b must have correct dimensions\n");
+            return;
+        }
+        if ((h.has_value() && h->size() != m_data.m) || (!h.has_value() && m_data.m > 0))
+        {
+            piqp_eprint("h must have correct dimensions\n");
+            return;
+        }
+        if (x_lb.has_value() && x_lb->size() != m_data.n)
+        {
+            piqp_eprint("x_lb must have correct dimensions\n");
+            return;
+        }
+        if (x_ub.has_value() && x_ub->size() != m_data.n)
+        {
+            piqp_eprint("x_ub must have correct dimensions\n");
+            return;
+        }
 
         m_data.P_utri = P.template triangularView<Eigen::Upper>();
-        if (A.has_value()) {
+        if (A.has_value())
+        {
             m_data.AT = A->transpose();
-        } else {
+        }
+        else
+        {
             m_data.AT.resize(m_data.n, 0);
         }
-        if (G.has_value()) {
+        if (G.has_value())
+        {
             m_data.GT = G->transpose();
-        } else {
+        }
+        else
+        {
             m_data.GT.resize(m_data.n, 0);
         }
         m_data.c = c;
         m_data.b = b.has_value() ? *b : Vec<T>::Zero(0);
-        if (h.has_value()) {
+        if (h.has_value())
+        {
             m_data.h = (*h).cwiseMin(PIQP_INF).cwiseMax(-PIQP_INF);
-        } else {
+        }
+        else
+        {
             m_data.h.resize(0);
         }
 
@@ -453,7 +494,7 @@ protected:
             z_lb.array() += delta_z_bar;
             z_ub.array() += delta_z_bar;
 
-            m_result.info.mu = (m_result.s.dot(m_result.z) + s_lb.dot(z_lb) + s_ub.dot(z_ub) ) / T(m_data.m + m_data.n_lb + m_data.n_ub);
+            m_result.info.mu = (m_result.s.dot(m_result.z) + s_lb.dot(z_lb) + s_ub.dot(z_ub)) / T(m_data.m + m_data.n_lb + m_data.n_ub);
         }
 
         m_result.zeta = m_result.x;
@@ -475,17 +516,17 @@ protected:
             if (m_settings.verbose)
             {
                 piqp_print("%3zd   % .5e   % .5e   %.5e   %.5e   %.5e   %.3e   %.3e   %.3e   %.4f   %.4f\n",
-                        m_result.info.iter,
-                        (double) m_result.info.primal_obj,
-                        (double) m_result.info.dual_obj,
-                        (double) m_result.info.duality_gap,
-                        (double) m_result.info.primal_inf,
-                        (double) m_result.info.dual_inf,
-                        (double) m_result.info.rho,
-                        (double) m_result.info.delta,
-                        (double) m_result.info.mu,
-                        (double) m_result.info.primal_step,
-                        (double) m_result.info.dual_step);
+                           m_result.info.iter,
+                           (double) m_result.info.primal_obj,
+                           (double) m_result.info.dual_obj,
+                           (double) m_result.info.duality_gap,
+                           (double) m_result.info.primal_inf,
+                           (double) m_result.info.dual_inf,
+                           (double) m_result.info.rho,
+                           (double) m_result.info.delta,
+                           (double) m_result.info.mu,
+                           (double) m_result.info.primal_step,
+                           (double) m_result.info.dual_step);
             }
 
             if (m_result.info.primal_inf < m_settings.eps_abs + m_settings.eps_rel * m_result.info.primal_rel_inf &&
@@ -679,7 +720,7 @@ protected:
                 s_ub += m_result.info.primal_step * ds_ub.head(m_data.n_ub);
 
                 T mu_prev = m_result.info.mu;
-                m_result.info.mu = (m_result.s.dot(m_result.z) + s_lb.dot(z_lb) + s_ub.dot(z_ub) ) / T(m_data.m + m_data.n_lb + m_data.n_ub);
+                m_result.info.mu = (m_result.s.dot(m_result.z) + s_lb.dot(z_lb) + s_ub.dot(z_ub)) / T(m_data.m + m_data.n_lb + m_data.n_ub);
                 T mu_rate = std::max(T(0), (mu_prev - m_result.info.mu) / mu_prev);
 
                 // ------------------ update regularization ------------------
@@ -961,7 +1002,11 @@ public:
 
         if (P.has_value())
         {
-            if (P->rows() != this->m_data.n || P->cols() != this->m_data.n) { piqp_eprint("P has wrong dimensions\n"); return; }
+            if (P->rows() != this->m_data.n || P->cols() != this->m_data.n)
+            {
+                piqp_eprint("P has wrong dimensions\n");
+                return;
+            }
             this->m_data.P_utri = P->template triangularView<Eigen::Upper>();
 
             update_options |= KKTUpdateOptions::KKT_UPDATE_P;
@@ -969,7 +1014,11 @@ public:
 
         if (A.has_value())
         {
-            if (A->rows() != this->m_data.p || A->cols() != this->m_data.n) { piqp_eprint("A has wrong dimensions\n"); return; }
+            if (A->rows() != this->m_data.p || A->cols() != this->m_data.n)
+            {
+                piqp_eprint("A has wrong dimensions\n");
+                return;
+            }
             this->m_data.AT = A->transpose();
 
             update_options |= KKTUpdateOptions::KKT_UPDATE_A;
@@ -977,7 +1026,11 @@ public:
 
         if (G.has_value())
         {
-            if (G->rows() != this->m_data.m || G->cols() != this->m_data.n) { piqp_eprint("G has wrong dimensions\n"); return; }
+            if (G->rows() != this->m_data.m || G->cols() != this->m_data.n)
+            {
+                piqp_eprint("G has wrong dimensions\n");
+                return;
+            }
             this->m_data.GT = G->transpose();
 
             update_options |= KKTUpdateOptions::KKT_UPDATE_G;
@@ -985,24 +1038,44 @@ public:
 
         if (c.has_value())
         {
-            if (c->size() != this->m_data.n) { piqp_eprint("c has wrong dimensions\n"); return; }
+            if (c->size() != this->m_data.n)
+            {
+                piqp_eprint("c has wrong dimensions\n");
+                return;
+            }
             this->m_data.c = *c;
         }
 
         if (b.has_value())
         {
-            if (b->size() != this->m_data.p) { piqp_eprint("b has wrong dimensions\n"); return; }
+            if (b->size() != this->m_data.p)
+            {
+                piqp_eprint("b has wrong dimensions\n");
+                return;
+            }
             this->m_data.b = *b;
         }
 
         if (h.has_value())
         {
-            if (h->size() != this->m_data.m) { piqp_eprint("h has wrong dimensions\n"); return; }
+            if (h->size() != this->m_data.m)
+            {
+                piqp_eprint("h has wrong dimensions\n");
+                return;
+            }
             this->m_data.h = (*h).cwiseMin(PIQP_INF).cwiseMax(-PIQP_INF);
         }
 
-        if (x_lb.has_value() && x_lb->size() != this->m_data.n) { piqp_eprint("x_lb has wrong dimensions\n"); return; }
-        if (x_ub.has_value() && x_ub->size() != this->m_data.n) { piqp_eprint("x_ub has wrong dimensions\n"); return; }
+        if (x_lb.has_value() && x_lb->size() != this->m_data.n)
+        {
+            piqp_eprint("x_lb has wrong dimensions\n");
+            return;
+        }
+        if (x_ub.has_value() && x_ub->size() != this->m_data.n)
+        {
+            piqp_eprint("x_ub has wrong dimensions\n");
+            return;
+        }
         if (x_lb.has_value()) { this->setup_lb_data(x_lb); }
         if (x_ub.has_value()) { this->setup_ub_data(x_ub); }
 
@@ -1065,13 +1138,21 @@ public:
 
         if (P.has_value())
         {
-            if (P->rows() != this->m_data.n || P->cols() != this->m_data.n) { piqp_eprint("P has wrong dimensions\n"); return; }
+            if (P->rows() != this->m_data.n || P->cols() != this->m_data.n)
+            {
+                piqp_eprint("P has wrong dimensions\n");
+                return;
+            }
             isize n = P->outerSize();
             for (isize j = 0; j < n; j++)
             {
                 isize P_col_nnz = P->outerIndexPtr()[j + 1] - P->outerIndexPtr()[j];
                 isize P_utri_col_nnz = this->m_data.P_utri.outerIndexPtr()[j + 1] - this->m_data.P_utri.outerIndexPtr()[j];
-                if (P_col_nnz < P_utri_col_nnz) { piqp_eprint("P nonzeros missmatch\n"); return; }
+                if (P_col_nnz < P_utri_col_nnz)
+                {
+                    piqp_eprint("P nonzeros missmatch\n");
+                    return;
+                }
                 Eigen::Map<Vec<T>>(this->m_data.P_utri.valuePtr() + this->m_data.P_utri.outerIndexPtr()[j], P_utri_col_nnz) = Eigen::Map<const Vec<T>>(P->valuePtr() + P->outerIndexPtr()[j], P_utri_col_nnz);
             }
 
@@ -1080,8 +1161,16 @@ public:
 
         if (A.has_value())
         {
-            if (A->rows() != this->m_data.p || A->cols() != this->m_data.n) { piqp_eprint("A has wrong dimensions\n"); return; }
-            if (A->nonZeros() != this->m_data.AT.nonZeros()) { piqp_eprint("A nonzeros missmatch\n"); return; }
+            if (A->rows() != this->m_data.p || A->cols() != this->m_data.n)
+            {
+                piqp_eprint("A has wrong dimensions\n");
+                return;
+            }
+            if (A->nonZeros() != this->m_data.AT.nonZeros())
+            {
+                piqp_eprint("A nonzeros missmatch\n");
+                return;
+            }
             sparse::transpose_no_allocation(*A, this->m_data.AT);
 
             update_options |= KKTUpdateOptions::KKT_UPDATE_A;
@@ -1089,8 +1178,16 @@ public:
 
         if (G.has_value())
         {
-            if (G->rows() != this->m_data.m || G->cols() != this->m_data.n) { piqp_eprint("G has wrong dimensions\n"); return; }
-            if (G->nonZeros() != this->m_data.GT.nonZeros()) { piqp_eprint("G nonzeros missmatch\n"); return; }
+            if (G->rows() != this->m_data.m || G->cols() != this->m_data.n)
+            {
+                piqp_eprint("G has wrong dimensions\n");
+                return;
+            }
+            if (G->nonZeros() != this->m_data.GT.nonZeros())
+            {
+                piqp_eprint("G nonzeros missmatch\n");
+                return;
+            }
             sparse::transpose_no_allocation(*G, this->m_data.GT);
 
             update_options |= KKTUpdateOptions::KKT_UPDATE_G;
@@ -1098,24 +1195,44 @@ public:
 
         if (c.has_value())
         {
-            if (c->size() != this->m_data.n) { piqp_eprint("c has wrong dimensions\n"); return; }
+            if (c->size() != this->m_data.n)
+            {
+                piqp_eprint("c has wrong dimensions\n");
+                return;
+            }
             this->m_data.c = *c;
         }
 
         if (b.has_value())
         {
-            if (b->size() != this->m_data.p) { piqp_eprint("b has wrong dimensions\n"); return; }
+            if (b->size() != this->m_data.p)
+            {
+                piqp_eprint("b has wrong dimensions\n");
+                return;
+            }
             this->m_data.b = *b;
         }
 
         if (h.has_value())
         {
-            if (h->size() != this->m_data.m) { piqp_eprint("h has wrong dimensions\n"); return; }
+            if (h->size() != this->m_data.m)
+            {
+                piqp_eprint("h has wrong dimensions\n");
+                return;
+            }
             this->m_data.h = (*h).cwiseMin(PIQP_INF).cwiseMax(-PIQP_INF);
         }
 
-        if (x_lb.has_value() && x_lb->size() != this->m_data.n) { piqp_eprint("x_lb has wrong dimensions\n"); return; }
-        if (x_ub.has_value() && x_ub->size() != this->m_data.n) { piqp_eprint("x_ub has wrong dimensions\n"); return; }
+        if (x_lb.has_value() && x_lb->size() != this->m_data.n)
+        {
+            piqp_eprint("x_lb has wrong dimensions\n");
+            return;
+        }
+        if (x_ub.has_value() && x_ub->size() != this->m_data.n)
+        {
+            piqp_eprint("x_ub has wrong dimensions\n");
+            return;
+        }
         if (x_lb.has_value()) { this->setup_lb_data(x_lb); }
         if (x_ub.has_value()) { this->setup_ub_data(x_ub); }
 
@@ -1141,4 +1258,4 @@ public:
 #include "piqp/solver.tpp"
 #endif
 
-#endif //PIQP_SOLVER_HPP
+#endif // PIQP_SOLVER_HPP

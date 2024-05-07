@@ -8,13 +8,13 @@
 #ifndef PIQP_UTILS_IO_UTILS_HPP
 #define PIQP_UTILS_IO_UTILS_HPP
 
-#include <iostream>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+#include <iostream>
 
-#include "piqp/utils/eigen_matio.hpp"
 #include "piqp/dense/model.hpp"
 #include "piqp/sparse/model.hpp"
+#include "piqp/utils/eigen_matio.hpp"
 
 namespace piqp
 {
@@ -91,4 +91,4 @@ sparse::Model<T, I> load_sparse_model(const std::string& path)
 
 } // namespace piqp
 
-#endif //PIQP_UTILS_IO_UTILS_HPP
+#endif // PIQP_UTILS_IO_UTILS_HPP

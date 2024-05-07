@@ -23,4 +23,4 @@ extern template class LDLTNoPivot<common::Mat, Eigen::Lower>;
 
 } // namespace piqp
 
-#endif //PIQP_LDLT_NO_PIVOT_TPP
+#endif // PIQP_LDLT_NO_PIVOT_TPP

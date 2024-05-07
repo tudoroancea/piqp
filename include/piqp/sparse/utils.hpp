@@ -202,4 +202,4 @@ void post_mult_diagonal(SparseMat<T, I>& A, const CVecRef<T>& diag)
 
 } // namespace piqp
 
-#endif //PIQP_SPARSE_UTILS_HPP
+#endif // PIQP_SPARSE_UTILS_HPP

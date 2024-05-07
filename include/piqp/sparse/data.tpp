@@ -23,4 +23,4 @@ extern template struct Data<common::Scalar, common::StorageIndex>;
 
 } // namespace piqp
 
-#endif //PIQP_SPARSE_DATA_TPP
+#endif // PIQP_SPARSE_DATA_TPP

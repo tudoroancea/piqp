@@ -73,4 +73,4 @@ using CMatRef = Eigen::Ref<const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic
 
 } // namespace piqp
 
-#endif //PIQP_TYPEDEFS_HPP
+#endif // PIQP_TYPEDEFS_HPP

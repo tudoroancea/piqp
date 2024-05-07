@@ -9,10 +9,10 @@
 #ifndef PIQP_DENSE_KKT_HPP
 #define PIQP_DENSE_KKT_HPP
 
-#include "piqp/settings.hpp"
-#include "piqp/kkt_fwd.hpp"
 #include "piqp/dense/data.hpp"
 #include "piqp/dense/ldlt_no_pivot.hpp"
+#include "piqp/kkt_fwd.hpp"
+#include "piqp/settings.hpp"
 
 namespace piqp
 {
@@ -265,13 +265,11 @@ struct KKT
 
         for (isize i = 0; i < data.n_lb; i++)
         {
-            rhs(data.x_lb_idx(i)) -= data.x_lb_scaling(i) * (rhs_z_lb(i) - m_z_lb_inv(i) * rhs_s_lb(i))
-                                     / (m_s_lb(i) * m_z_lb_inv(i) + m_delta);
+            rhs(data.x_lb_idx(i)) -= data.x_lb_scaling(i) * (rhs_z_lb(i) - m_z_lb_inv(i) * rhs_s_lb(i)) / (m_s_lb(i) * m_z_lb_inv(i) + m_delta);
         }
         for (isize i = 0; i < data.n_ub; i++)
         {
-            rhs(data.x_ub_idx(i)) += data.x_ub_scaling(i) * (rhs_z_ub(i) - m_z_ub_inv(i) * rhs_s_ub(i))
-                                     / (m_s_ub(i) * m_z_ub_inv(i) + m_delta);
+            rhs(data.x_ub_idx(i)) += data.x_ub_scaling(i) * (rhs_z_ub(i) - m_z_ub_inv(i) * rhs_s_ub(i)) / (m_s_ub(i) * m_z_ub_inv(i) + m_delta);
         }
 
         sol = rhs;
@@ -330,22 +328,18 @@ struct KKT
 
         for (isize i = 0; i < data.n_lb; i++)
         {
-            delta_z_lb(i) = (-data.x_lb_scaling(i) * delta_x(data.x_lb_idx(i)) - rhs_z_lb(i) + m_z_lb_inv(i) * rhs_s_lb(i))
-                / (m_s_lb(i) * m_z_lb_inv(i) + m_delta);
+            delta_z_lb(i) = (-data.x_lb_scaling(i) * delta_x(data.x_lb_idx(i)) - rhs_z_lb(i) + m_z_lb_inv(i) * rhs_s_lb(i)) / (m_s_lb(i) * m_z_lb_inv(i) + m_delta);
         }
         for (isize i = 0; i < data.n_ub; i++)
         {
-            delta_z_ub(i) = (data.x_ub_scaling(i) * delta_x(data.x_ub_idx(i)) - rhs_z_ub(i) + m_z_ub_inv(i) * rhs_s_ub(i))
-                            / (m_s_ub(i) * m_z_ub_inv(i) + m_delta);
+            delta_z_ub(i) = (data.x_ub_scaling(i) * delta_x(data.x_ub_idx(i)) - rhs_z_ub(i) + m_z_ub_inv(i) * rhs_s_ub(i)) / (m_s_ub(i) * m_z_ub_inv(i) + m_delta);
         }
 
         delta_s.array() = m_z_inv.array() * (rhs_s.array() - m_s.array() * delta_z.array());
 
-        delta_s_lb.head(data.n_lb).array() = m_z_lb_inv.head(data.n_lb).array()
-            * (rhs_s_lb.head(data.n_lb).array() - m_s_lb.head(data.n_lb).array() * delta_z_lb.head(data.n_lb).array());
+        delta_s_lb.head(data.n_lb).array() = m_z_lb_inv.head(data.n_lb).array() * (rhs_s_lb.head(data.n_lb).array() - m_s_lb.head(data.n_lb).array() * delta_z_lb.head(data.n_lb).array());
 
-        delta_s_ub.head(data.n_ub).array() = m_z_ub_inv.head(data.n_ub).array()
-            * (rhs_s_ub.head(data.n_ub).array() - m_s_ub.head(data.n_ub).array() * delta_z_ub.head(data.n_ub).array());
+        delta_s_ub.head(data.n_ub).array() = m_z_ub_inv.head(data.n_ub).array() * (rhs_s_ub.head(data.n_ub).array() - m_s_ub.head(data.n_ub).array() * delta_z_ub.head(data.n_ub).array());
 
 #ifdef PIQP_DEBUG_PRINT
         Vec<T> err_x = delta_x;
@@ -405,4 +399,4 @@ struct KKT
 #include "piqp/dense/kkt.tpp"
 #endif
 
-#endif //PIQP_DENSE_KKT_HPP
+#endif // PIQP_DENSE_KKT_HPP

@@ -36,4 +36,4 @@ public:
 
 } // namespace piqp
 
-#endif //PIQP_TIMER_HPP
+#endif // PIQP_TIMER_HPP

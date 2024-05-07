@@ -9,8 +9,8 @@
 #ifndef PIQP_SPARSE_KKT_FULL_HPP
 #define PIQP_SPARSE_KKT_FULL_HPP
 
-#include "piqp/typedefs.hpp"
 #include "piqp/kkt_fwd.hpp"
+#include "piqp/typedefs.hpp"
 
 namespace piqp
 {
@@ -35,7 +35,8 @@ struct KKTImpl<Derived, T, I, KKTMode::KKT_FULL>
         auto& data = static_cast<Derived*>(this)->data;
 
         P_utri_to_Ki.resize(data.P_utri.nonZeros());
-        P_diagonal.resize(data.n); P_diagonal.setZero();
+        P_diagonal.resize(data.n);
+        P_diagonal.setZero();
         AT_to_Ki.resize(data.AT.nonZeros());
         GT_to_Ki.resize(data.GT.nonZeros());
     }
@@ -61,7 +62,8 @@ struct KKTImpl<Derived, T, I, KKTMode::KKT_FULL>
                 isize last_col_index = data.P_utri.innerIndexPtr()[data.P_utri.outerIndexPtr()[j + 1] - 1];
                 // if the last element in the column is not the diagonal element
                 // then we need to add one more non-zero element
-                if (last_col_index != j) {
+                if (last_col_index != j)
+                {
                     col_nnz += 1;
                 }
             }
@@ -271,4 +273,4 @@ struct KKTImpl<Derived, T, I, KKTMode::KKT_FULL>
 
 } // namespace piqp
 
-#endif //PIQP_SPARSE_KKT_FULL_HPP
+#endif // PIQP_SPARSE_KKT_FULL_HPP

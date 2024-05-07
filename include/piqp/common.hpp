@@ -60,4 +60,4 @@ using Ordering = ::piqp::sparse::AMDOrdering<StorageIndex>;
 
 } // namespace piqp
 
-#endif //PIQP_COMMON_HPP
+#endif // PIQP_COMMON_HPP

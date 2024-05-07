@@ -9,16 +9,16 @@
 #ifndef PIQP_SPARSE_KKT_HPP
 #define PIQP_SPARSE_KKT_HPP
 
+#include "piqp/kkt_fwd.hpp"
 #include "piqp/settings.hpp"
 #include "piqp/sparse/data.hpp"
+#include "piqp/sparse/kkt_all_eliminated.hpp"
+#include "piqp/sparse/kkt_eq_eliminated.hpp"
+#include "piqp/sparse/kkt_full.hpp"
+#include "piqp/sparse/kkt_ineq_eliminated.hpp"
 #include "piqp/sparse/ldlt.hpp"
 #include "piqp/sparse/ordering.hpp"
 #include "piqp/sparse/utils.hpp"
-#include "piqp/kkt_fwd.hpp"
-#include "piqp/sparse/kkt_full.hpp"
-#include "piqp/sparse/kkt_eq_eliminated.hpp"
-#include "piqp/sparse/kkt_ineq_eliminated.hpp"
-#include "piqp/sparse/kkt_all_eliminated.hpp"
 
 namespace piqp
 {
@@ -56,7 +56,8 @@ struct KKT : public KKTImpl<KKT<T, I, Mode, Ordering>, T, I, Mode>
     Vec<T> err_corr_perm; // temporary variable to calculate error in iterative refinement and correction term
     Vec<T> ref_sol_perm;  // refined solution
 
-    KKT(const Data<T, I>& data, const Settings<T>& settings) : data(data), settings(settings) {}
+    KKT(const Data<T, I>& data, const Settings<T>& settings)
+    : data(data), settings(settings) {}
 
     ~KKT() {};
 
@@ -147,13 +148,13 @@ struct KKT : public KKTImpl<KKT<T, I, Mode, Ordering>, T, I, Mode>
         {
             isize col = data.x_lb_idx(i);
             PKPt.valuePtr()[PKPt.outerIndexPtr()[ordering.inv(col) + 1] - 1] +=
-                data.x_lb_scaling(i) * data.x_lb_scaling(i) / (m_z_lb_inv(i) * m_s_lb(i) + m_delta);
+                    data.x_lb_scaling(i) * data.x_lb_scaling(i) / (m_z_lb_inv(i) * m_s_lb(i) + m_delta);
         }
         for (isize i = 0; i < data.n_ub; i++)
         {
             isize col = data.x_ub_idx(i);
             PKPt.valuePtr()[PKPt.outerIndexPtr()[ordering.inv(col) + 1] - 1] +=
-                data.x_ub_scaling(i) * data.x_ub_scaling(i) / (m_z_ub_inv(i) * m_s_ub(i) + m_delta);
+                    data.x_ub_scaling(i) * data.x_ub_scaling(i) / (m_z_ub_inv(i) * m_s_ub(i) + m_delta);
         }
     }
 
@@ -321,13 +322,11 @@ struct KKT : public KKTImpl<KKT<T, I, Mode, Ordering>, T, I, Mode>
         }
         for (isize i = 0; i < data.n_lb; i++)
         {
-            rhs(data.x_lb_idx(i)) -= data.x_lb_scaling(i) * (rhs_z_lb(i) - m_z_lb_inv(i) * rhs_s_lb(i))
-                                     / (m_s_lb(i) * m_z_lb_inv(i) + m_delta);
+            rhs(data.x_lb_idx(i)) -= data.x_lb_scaling(i) * (rhs_z_lb(i) - m_z_lb_inv(i) * rhs_s_lb(i)) / (m_s_lb(i) * m_z_lb_inv(i) + m_delta);
         }
         for (isize i = 0; i < data.n_ub; i++)
         {
-            rhs(data.x_ub_idx(i)) += data.x_ub_scaling(i) * (rhs_z_ub(i) - m_z_ub_inv(i) * rhs_s_ub(i))
-                                     / (m_s_ub(i) * m_z_ub_inv(i) + m_delta);
+            rhs(data.x_ub_idx(i)) += data.x_ub_scaling(i) * (rhs_z_ub(i) - m_z_ub_inv(i) * rhs_s_ub(i)) / (m_s_ub(i) * m_z_ub_inv(i) + m_delta);
         }
 
         ordering.template perm<T>(rhs_perm, rhs);
@@ -415,26 +414,22 @@ struct KKT : public KKTImpl<KKT<T, I, Mode, Ordering>, T, I, Mode>
 
         for (isize i = 0; i < data.n_lb; i++)
         {
-//            delta_z_lb(i) = (-data.x_lb_scaling(i) * delta_x(data.x_lb_idx(i)) - rhs_z_lb(i) + m_z_lb_inv(i) * rhs_s_lb(i))
-//                            / (m_s_lb(i) * m_z_lb_inv(i) + m_delta);
-            delta_z_lb(i) = ((-data.x_lb_scaling(i) * delta_x(data.x_lb_idx(i)) - rhs_z_lb(i)) / m_z_lb_inv(i) + rhs_s_lb(i))
-                            / (m_s_lb(i) + m_delta / m_z_lb_inv(i));
+            //            delta_z_lb(i) = (-data.x_lb_scaling(i) * delta_x(data.x_lb_idx(i)) - rhs_z_lb(i) + m_z_lb_inv(i) * rhs_s_lb(i))
+            //                            / (m_s_lb(i) * m_z_lb_inv(i) + m_delta);
+            delta_z_lb(i) = ((-data.x_lb_scaling(i) * delta_x(data.x_lb_idx(i)) - rhs_z_lb(i)) / m_z_lb_inv(i) + rhs_s_lb(i)) / (m_s_lb(i) + m_delta / m_z_lb_inv(i));
         }
         for (isize i = 0; i < data.n_ub; i++)
         {
-//            delta_z_ub(i) = (data.x_ub_scaling(i) * delta_x(data.x_ub_idx(i)) - rhs_z_ub(i) + m_z_ub_inv(i) * rhs_s_ub(i))
-//                            / (m_s_ub(i) * m_z_ub_inv(i) + m_delta);
-            delta_z_ub(i) = ((data.x_ub_scaling(i) * delta_x(data.x_ub_idx(i)) - rhs_z_ub(i)) / m_z_ub_inv(i) + rhs_s_ub(i))
-                            / (m_s_ub(i) + m_delta / m_z_ub_inv(i));
+            //            delta_z_ub(i) = (data.x_ub_scaling(i) * delta_x(data.x_ub_idx(i)) - rhs_z_ub(i) + m_z_ub_inv(i) * rhs_s_ub(i))
+            //                            / (m_s_ub(i) * m_z_ub_inv(i) + m_delta);
+            delta_z_ub(i) = ((data.x_ub_scaling(i) * delta_x(data.x_ub_idx(i)) - rhs_z_ub(i)) / m_z_ub_inv(i) + rhs_s_ub(i)) / (m_s_ub(i) + m_delta / m_z_ub_inv(i));
         }
 
         delta_s.array() = m_s.array() * m_z_inv.array() * (rhs_s.array() / m_s.array() - delta_z.array());
 
-        delta_s_lb.head(data.n_lb).array() = m_s_lb.head(data.n_lb).array() * m_z_lb_inv.head(data.n_lb).array()
-            * (rhs_s_lb.head(data.n_lb).array() / m_s_lb.head(data.n_lb).array() - delta_z_lb.head(data.n_lb).array());
+        delta_s_lb.head(data.n_lb).array() = m_s_lb.head(data.n_lb).array() * m_z_lb_inv.head(data.n_lb).array() * (rhs_s_lb.head(data.n_lb).array() / m_s_lb.head(data.n_lb).array() - delta_z_lb.head(data.n_lb).array());
 
-        delta_s_ub.head(data.n_ub).array() = m_s_ub.head(data.n_ub).array() * m_z_ub_inv.head(data.n_ub).array()
-            * (rhs_s_ub.head(data.n_ub).array() / m_s_ub.head(data.n_ub).array() - delta_z_ub.head(data.n_ub).array());
+        delta_s_ub.head(data.n_ub).array() = m_s_ub.head(data.n_ub).array() * m_z_ub_inv.head(data.n_ub).array() * (rhs_s_ub.head(data.n_ub).array() / m_s_ub.head(data.n_ub).array() - delta_z_ub.head(data.n_ub).array());
 
 #ifdef PIQP_DEBUG_PRINT
         Vec<T> err_x = delta_x;
@@ -494,4 +489,4 @@ struct KKT : public KKTImpl<KKT<T, I, Mode, Ordering>, T, I, Mode>
 #include "piqp/sparse/kkt.tpp"
 #endif
 
-#endif //PIQP_SPARSE_KKT_HPP
+#endif // PIQP_SPARSE_KKT_HPP

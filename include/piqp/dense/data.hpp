@@ -9,9 +9,9 @@
 #ifndef PIQP_DENSE_DATA_HPP
 #define PIQP_DENSE_DATA_HPP
 
+#include "piqp/dense/model.hpp"
 #include "piqp/fwd.hpp"
 #include "piqp/typedefs.hpp"
-#include "piqp/dense/model.hpp"
 
 namespace piqp
 {
@@ -98,4 +98,4 @@ struct Data
 #include "piqp/dense/data.tpp"
 #endif
 
-#endif //PIQP_DENSE_DATA_HPP
+#endif // PIQP_DENSE_DATA_HPP

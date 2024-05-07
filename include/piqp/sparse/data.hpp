@@ -13,8 +13,8 @@
 #include <Eigen/Sparse>
 
 #include "piqp/fwd.hpp"
-#include "piqp/typedefs.hpp"
 #include "piqp/sparse/model.hpp"
+#include "piqp/typedefs.hpp"
 
 namespace piqp
 {
@@ -52,14 +52,14 @@ struct Data
     Data() {};
 
     explicit Data(Model<T, I> model)
-        : n(model.P.rows()), p(model.A.rows()), m(model.G.rows()),
-          P_utri(model.P.template triangularView<Eigen::Upper>()),
-          AT(model.A.transpose()), GT(model.G.transpose()),
-          c(model.c), b(model.b), h(model.h),
-          n_lb(0), n_ub(0),
-          x_lb_idx(model.P.rows()), x_ub_idx(model.P.rows()),
-          x_lb_scaling(Vec<T>::Constant(model.P.rows(), T(1))), x_ub_scaling(Vec<T>::Constant(model.P.rows(), T(1))),
-          x_lb_n(model.P.rows()), x_ub(model.P.rows())
+    : n(model.P.rows()), p(model.A.rows()), m(model.G.rows()),
+      P_utri(model.P.template triangularView<Eigen::Upper>()),
+      AT(model.A.transpose()), GT(model.G.transpose()),
+      c(model.c), b(model.b), h(model.h),
+      n_lb(0), n_ub(0),
+      x_lb_idx(model.P.rows()), x_ub_idx(model.P.rows()),
+      x_lb_scaling(Vec<T>::Constant(model.P.rows(), T(1))), x_ub_scaling(Vec<T>::Constant(model.P.rows(), T(1))),
+      x_lb_n(model.P.rows()), x_ub(model.P.rows())
     {
         isize i_lb = 0;
         for (isize i = 0; i < n; i++)
@@ -101,4 +101,4 @@ struct Data
 #include "piqp/sparse/data.tpp"
 #endif
 
-#endif //PIQP_SPARSE_DATA_HPP
+#endif // PIQP_SPARSE_DATA_HPP
