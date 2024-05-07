@@ -8,11 +8,10 @@
 
 #define PIQP_EIGEN_CHECK_MALLOC
 
-#include "piqp/piqp.hpp"
-#include "piqp/dense/ldlt_no_pivot.hpp"
-#include "piqp/utils/random_utils.hpp"
-
 #include "gtest/gtest.h"
+#include "piqp/dense/ldlt_no_pivot.hpp"
+#include "piqp/piqp.hpp"
+#include "piqp/utils/random_utils.hpp"
 
 using namespace piqp;
 using namespace piqp::dense;

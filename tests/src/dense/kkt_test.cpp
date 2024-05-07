@@ -8,11 +8,11 @@
 
 #define PIQP_EIGEN_CHECK_MALLOC
 
-#include "piqp/piqp.hpp"
 #include "piqp/dense/kkt.hpp"
-#include "piqp/utils/random_utils.hpp"
 
 #include "gtest/gtest.h"
+#include "piqp/piqp.hpp"
+#include "piqp/utils/random_utils.hpp"
 #include "utils.hpp"
 
 using namespace piqp;
@@ -41,12 +41,18 @@ TEST(DenseKKTTest, UpdateScalings)
 
     rho = 0.8;
     delta = 0.2;
-    Vec<T> s(n_ineq); s.setConstant(1);
-    Vec<T> s_lb(dim); s_lb.setConstant(1);
-    Vec<T> s_ub(dim); s_ub.setConstant(1);
-    Vec<T> z(n_ineq); z.setConstant(1);
-    Vec<T> z_lb(dim); z_lb.setConstant(1);
-    Vec<T> z_ub(dim); z_ub.setConstant(1);
+    Vec<T> s(n_ineq);
+    s.setConstant(1);
+    Vec<T> s_lb(dim);
+    s_lb.setConstant(1);
+    Vec<T> s_ub(dim);
+    s_ub.setConstant(1);
+    Vec<T> z(n_ineq);
+    z.setConstant(1);
+    Vec<T> z_lb(dim);
+    z_lb.setConstant(1);
+    Vec<T> z_ub(dim);
+    z_ub.setConstant(1);
 
     PIQP_EIGEN_MALLOC_NOT_ALLOWED();
     kkt.update_scalings(rho, delta, s, s_lb, s_ub, z, z_lb, z_ub);

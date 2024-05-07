@@ -8,10 +8,9 @@
 
 #define PIQP_EIGEN_CHECK_MALLOC
 
+#include "gtest/gtest.h"
 #include "piqp/piqp.hpp"
 #include "piqp/utils/random_utils.hpp"
-
-#include "gtest/gtest.h"
 
 using namespace piqp;
 
@@ -26,20 +25,28 @@ using I = int;
  * second QP:
  * min 4 x1^2 + 2 x2^2 - x1 - 4 x2
  * s.t. -1 <= x <= 2, x1 = 3 x2
-*/
+ */
 TEST(DenseSolverTest, SimpleQPWithUpdate)
 {
-    Mat<T> P(2, 2); P << 6, 0, 0, 4;
-    Vec<T> c(2); c << -1, -4;
+    Mat<T> P(2, 2);
+    P << 6, 0, 0, 4;
+    Vec<T> c(2);
+    c << -1, -4;
 
-    Mat<T> A(1, 2); A << 1, -2;
-    Vec<T> b(1); b << 0;
+    Mat<T> A(1, 2);
+    A << 1, -2;
+    Vec<T> b(1);
+    b << 0;
 
-    Mat<T> G(2, 2); G << 1, 0, -1, 0;
-    Vec<T> h(2); h << 1, 1;
+    Mat<T> G(2, 2);
+    G << 1, 0, -1, 0;
+    Vec<T> h(2);
+    h << 1, 1;
 
-    Vec<T> x_lb(2); x_lb << -std::numeric_limits<T>::infinity(), -1;
-    Vec<T> x_ub(2); x_ub << std::numeric_limits<T>::infinity(), 1;
+    Vec<T> x_lb(2);
+    x_lb << -std::numeric_limits<T>::infinity(), -1;
+    Vec<T> x_ub(2);
+    x_ub << std::numeric_limits<T>::infinity(), 1;
 
     DenseSolver<T> solver;
     solver.settings().verbose = true;
@@ -88,17 +95,23 @@ TEST(DenseSolverTest, SimpleQPWithUpdate)
 /*
  * min 3 x1^2 + 2 x2^2 - x1 - 4 x2
  * s.t. -1 <= x1 <= 0, 1 <= x2 <= 2,  x1 = 2 x2
-*/
+ */
 TEST(DenseSolverTest, PrimalInfeasibleQP)
 {
-    Mat<T> P(2, 2); P << 6, 0, 0, 4;
-    Vec<T> c(2); c << -1, -4;
+    Mat<T> P(2, 2);
+    P << 6, 0, 0, 4;
+    Vec<T> c(2);
+    c << -1, -4;
 
-    Mat<T> A(1, 2); A << 1, -2;
-    Vec<T> b(1); b << 0;
+    Mat<T> A(1, 2);
+    A << 1, -2;
+    Vec<T> b(1);
+    b << 0;
 
-    Mat<T> G(4, 2); G << 1, 0, 0, 1, -1, 0, 0, -1;
-    Vec<T> h(4); h << 0, 2, 1, -1;
+    Mat<T> G(4, 2);
+    G << 1, 0, 0, 1, -1, 0, 0, -1;
+    Vec<T> h(4);
+    h << 0, 2, 1, -1;
 
     DenseSolver<T> solver;
     solver.settings().verbose = true;
@@ -114,18 +127,21 @@ TEST(DenseSolverTest, PrimalInfeasibleQP)
 /*
  * min -x1 - x2
  * s.t. 0 <= x
-*/
+ */
 TEST(DenseSolverTest, DualInfeasibleQP)
 {
     Mat<T> P(2, 2);
     P.setZero();
-    Vec<T> c(2); c << -1, -1;
+    Vec<T> c(2);
+    c << -1, -1;
 
     Mat<T> A(0, 2);
     Vec<T> b(0);
 
-    Mat<T> G(2, 2); G << -1, 0, 0, -1;
-    Vec<T> h(2); h << 0, 0;
+    Mat<T> G(2, 2);
+    G << -1, 0, 0, -1;
+    Vec<T> h(2);
+    h << 0, 0;
 
     DenseSolver<T> solver;
     solver.settings().verbose = true;
@@ -138,27 +154,27 @@ TEST(DenseSolverTest, DualInfeasibleQP)
     ASSERT_EQ(status, Status::PIQP_DUAL_INFEASIBLE);
 }
 
-//TEST(DenseSolverTest, NonConvexQP)
+// TEST(DenseSolverTest, NonConvexQP)
 //{
-//    Mat<T> P(2, 2); P << 2, 5, 5, 1;
-//    Vec<T> c(2); c << 3, 4;
+//     Mat<T> P(2, 2); P << 2, 5, 5, 1;
+//     Vec<T> c(2); c << 3, 4;
 //
-//    Mat<T> A(0, 2);
-//    Vec<T> b(0);
+//     Mat<T> A(0, 2);
+//     Vec<T> b(0);
 //
-//    Mat<T> G(5, 2); G << -1, 0, 0, -1, -1, 3, 2, 5, 3, 4;
-//    Vec<T> h(5); h << 0, 0, -15, 100, 80;
+//     Mat<T> G(5, 2); G << -1, 0, 0, -1, -1, 3, 2, 5, 3, 4;
+//     Vec<T> h(5); h << 0, 0, -15, 100, 80;
 //
-//    DenseSolver<T> solver;
-//    solver.settings().verbose = true;
-//    solver.setup(P, c, A, b, G, h, nullopt, nullopt);
+//     DenseSolver<T> solver;
+//     solver.settings().verbose = true;
+//     solver.setup(P, c, A, b, G, h, nullopt, nullopt);
 //
-//    PIQP_EIGEN_MALLOC_NOT_ALLOWED();
-//    Status status = solver.solve();
-//    PIQP_EIGEN_MALLOC_ALLOWED();
+//     PIQP_EIGEN_MALLOC_NOT_ALLOWED();
+//     Status status = solver.solve();
+//     PIQP_EIGEN_MALLOC_ALLOWED();
 //
-//    ASSERT_EQ(status, Status::PIQP_NON_CONVEX);
-//}
+//     ASSERT_EQ(status, Status::PIQP_NON_CONVEX);
+// }
 
 TEST(DenseSolverTest, StronglyConvexWithEqualityAndInequalities)
 {
@@ -229,19 +245,19 @@ TEST(DenseSolverTest, SameResultWithRuizPreconditioner)
     ASSERT_EQ(status, Status::PIQP_SOLVED);
 
     ASSERT_LT((solver_no_precon.result().x - solver_ruiz.result().x).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().y - solver_ruiz.result().y).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().z - solver_ruiz.result().z).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().z_lb - solver_ruiz.result().z_lb).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().z_ub - solver_ruiz.result().z_ub).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().s - solver_ruiz.result().s).norm(), 1e-6);
-//    // convert inf to something finite
-//    ASSERT_LT((solver_no_precon.result().s_lb.cwiseMin(1e10) - solver_ruiz.result().s_lb.cwiseMin(1e10)).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().s_ub.cwiseMin(1e10) - solver_ruiz.result().s_ub.cwiseMin(1e10)).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().zeta - solver_ruiz.result().zeta).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().lambda - solver_ruiz.result().lambda).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().nu - solver_ruiz.result().nu).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().nu_lb - solver_ruiz.result().nu_lb).norm(), 1e-6);
-//    ASSERT_LT((solver_no_precon.result().nu_ub - solver_ruiz.result().nu_ub).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().y - solver_ruiz.result().y).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().z - solver_ruiz.result().z).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().z_lb - solver_ruiz.result().z_lb).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().z_ub - solver_ruiz.result().z_ub).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().s - solver_ruiz.result().s).norm(), 1e-6);
+    //    // convert inf to something finite
+    //    ASSERT_LT((solver_no_precon.result().s_lb.cwiseMin(1e10) - solver_ruiz.result().s_lb.cwiseMin(1e10)).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().s_ub.cwiseMin(1e10) - solver_ruiz.result().s_ub.cwiseMin(1e10)).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().zeta - solver_ruiz.result().zeta).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().lambda - solver_ruiz.result().lambda).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().nu - solver_ruiz.result().nu).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().nu_lb - solver_ruiz.result().nu_lb).norm(), 1e-6);
+    //    ASSERT_LT((solver_no_precon.result().nu_ub - solver_ruiz.result().nu_ub).norm(), 1e-6);
 }
 
 TEST(DenseSolverTest, StronglyConvexOnlyEqualities)

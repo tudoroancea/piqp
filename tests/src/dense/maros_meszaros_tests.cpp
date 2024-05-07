@@ -8,15 +8,15 @@
 
 #include <iostream>
 
+#include "gtest/gtest.h"
 #include "piqp/piqp.hpp"
 #include "piqp/utils/filesystem.hpp"
 #include "piqp/utils/io_utils.hpp"
 
-#include "gtest/gtest.h"
-
 using T = double;
 
-class DenseMarosMeszarosTest : public testing::TestWithParam<std::string> {};
+class DenseMarosMeszarosTest : public testing::TestWithParam<std::string>
+{};
 
 TEST_P(DenseMarosMeszarosTest, CanSolveProblemKKTFull)
 {
@@ -38,7 +38,7 @@ TEST_P(DenseMarosMeszarosTest, CanSolveProblemKKTFull)
 std::vector<std::string> get_maros_meszaros_problems()
 {
     std::vector<std::string> problem_names;
-    for (const auto & entry : piqp::fs::directory_iterator("maros_meszaros_data"))
+    for (const auto& entry : piqp::fs::directory_iterator("maros_meszaros_data"))
     {
         std::string file_name = entry.path().filename().string();
         if (file_name == "README.md" || file_name == "LICENSE") continue;
@@ -56,14 +56,14 @@ std::vector<std::string> get_maros_meszaros_problems()
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    FromFolder,
-    DenseMarosMeszarosTest,
-    ::testing::ValuesIn(get_maros_meszaros_problems()),
-//    ::testing::Values("QBEACONF"),
-    [](const ::testing::TestParamInfo<std::string>& info) {
-        piqp::usize i = info.param.find(".");
-        std::string name = info.param.substr(0, i);
-        std::replace(name.begin(), name.end(), '-', '_');
-        return name;
-    }
-);
+        FromFolder,
+        DenseMarosMeszarosTest,
+        ::testing::ValuesIn(get_maros_meszaros_problems()),
+        //    ::testing::Values("QBEACONF"),
+        [](const ::testing::TestParamInfo<std::string>& info)
+        {
+            piqp::usize i = info.param.find(".");
+            std::string name = info.param.substr(0, i);
+            std::replace(name.begin(), name.end(), '-', '_');
+            return name;
+        });
