@@ -81,13 +81,19 @@ protected:
 
 public:
     SolverBase()
-    : m_kkt(m_data, m_settings)};
+    : m_kkt(m_data, m_settings) {};
 
-    ~SolverBase()};
+    ~SolverBase() {};
 
-    Settings<T>& settings() { return m_settings; }
+    Settings<T>& settings()
+    {
+        return m_settings;
+    }
 
-    const Result<T>& result() const { return m_result; }
+    const Result<T>& result() const
+    {
+        return m_result;
+    }
 
     Status solve()
     {
