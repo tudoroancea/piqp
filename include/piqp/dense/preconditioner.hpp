@@ -45,9 +45,9 @@ class RuizEquilibration
     Vec<T> delta_ub_inv;
 
 public:
-    RuizEquilibration() {};
+    RuizEquilibration(){};
 
-    ~RuizEquilibration() {};
+    ~RuizEquilibration(){};
 
     void init(const Data<T>& data)
     {

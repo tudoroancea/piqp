@@ -64,9 +64,9 @@ public:
     Vec<I> P_inv;
 
 public:
-    AMDOrdering() {};
+    AMDOrdering(){};
 
-    ~AMDOrdering() {};
+    ~AMDOrdering(){};
 
     template<typename T>
     void init(const SparseMat<T, I>& A)

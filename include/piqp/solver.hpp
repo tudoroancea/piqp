@@ -81,9 +81,9 @@ protected:
 
 public:
     SolverBase()
-    : m_kkt(m_data, m_settings) {};
+    : m_kkt(m_data, m_settings)};
 
-    ~SolverBase() {};
+    ~SolverBase()};
 
     Settings<T>& settings() { return m_settings; }
 

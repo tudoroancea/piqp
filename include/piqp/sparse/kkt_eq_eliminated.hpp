@@ -29,9 +29,9 @@ struct KKTImpl<Derived, T, I, KKTMode::KKT_EQ_ELIMINATED>
     Vec<I> AT_A_to_Ki;   // mapping from AT_A row indices to KKT matrix
     Vec<I> GT_to_Ki;     // mapping from GT row indices to KKT matrix
 
-    KKTImpl() {};
+    KKTImpl(){};
 
-    ~KKTImpl() {};
+    ~KKTImpl(){};
 
     void init_workspace()
     {
