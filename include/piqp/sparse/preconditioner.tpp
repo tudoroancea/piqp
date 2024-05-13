@@ -23,4 +23,4 @@ extern template class RuizEquilibration<common::Scalar, common::StorageIndex>;
 
 } // namespace piqp
 
-#endif //PIQP_SPARSE_PRECONDITIONER_TPP
+#endif // PIQP_SPARSE_PRECONDITIONER_TPP

@@ -44,7 +44,7 @@ namespace internal
 
 template<typename MatrixType_, int UpLo_>
 struct traits<piqp::dense::LDLTNoPivot<MatrixType_, UpLo_>>
-    : traits<MatrixType_>
+: traits<MatrixType_>
 {
     typedef MatrixXpr XprKind;
     typedef SolverStorage StorageKind;
@@ -87,7 +87,7 @@ struct LDLTNoPivot_Traits;
  */
 template<typename MatrixType_, int UpLo_>
 class LDLTNoPivot
-    : public Eigen::SolverBase<LDLTNoPivot<MatrixType_, UpLo_>>
+: public Eigen::SolverBase<LDLTNoPivot<MatrixType_, UpLo_>>
 {
 public:
     typedef MatrixType_ MatrixType;
@@ -118,10 +118,10 @@ public:
      * perform decompositions via LDLTNoPivot::compute(const MatrixType&).
      */
     LDLTNoPivot()
-        : m_matrix(),
-          m_l1_norm(0),
-          m_isInitialized(false),
-          m_info(Eigen::NumericalIssue)
+    : m_matrix(),
+      m_l1_norm(0),
+      m_isInitialized(false),
+      m_info(Eigen::NumericalIssue)
     {
     }
 
@@ -132,21 +132,21 @@ public:
      * \sa LDLTNoPivot()
      */
     explicit LDLTNoPivot(Eigen::Index size)
-        : m_matrix(size, size),
-          m_l1_norm(0),
-          m_temporary(size),
-          m_isInitialized(false),
-          m_info(Eigen::NumericalIssue)
+    : m_matrix(size, size),
+      m_l1_norm(0),
+      m_temporary(size),
+      m_isInitialized(false),
+      m_info(Eigen::NumericalIssue)
     {
     }
 
     template<typename InputType>
     explicit LDLTNoPivot(const Eigen::EigenBase<InputType>& matrix)
-        : m_matrix(matrix.rows(), matrix.cols()),
-          m_l1_norm(0),
-          m_temporary(matrix.rows()),
-          m_isInitialized(false),
-          m_info(Eigen::NumericalIssue)
+    : m_matrix(matrix.rows(), matrix.cols()),
+      m_l1_norm(0),
+      m_temporary(matrix.rows()),
+      m_isInitialized(false),
+      m_info(Eigen::NumericalIssue)
     {
         compute(matrix.derived());
     }
@@ -160,11 +160,11 @@ public:
      */
     template<typename InputType>
     explicit LDLTNoPivot(Eigen::EigenBase<InputType>& matrix)
-        : m_matrix(matrix.derived()),
-          m_l1_norm(0),
-          m_temporary(matrix.rows()),
-          m_isInitialized(false),
-          m_info(Eigen::NumericalIssue)
+    : m_matrix(matrix.derived()),
+      m_l1_norm(0),
+      m_temporary(matrix.rows()),
+      m_isInitialized(false),
+      m_info(Eigen::NumericalIssue)
     {
         compute(matrix.derived());
     }

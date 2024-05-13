@@ -48,7 +48,8 @@ struct KKT
     Vec<T> err_corr;      // temporary variable to calculate error in iterative refinement and correction term
     Vec<T> ref_sol;       // refined solution
 
-    KKT(const Data<T>& data, const Settings<T>& settings) : data(data), settings(settings) {}
+    KKT(const Data<T>& data, const Settings<T>& settings)
+    : data(data), settings(settings) {}
 
     ~KKT() {};
 

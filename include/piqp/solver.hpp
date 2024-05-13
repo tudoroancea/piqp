@@ -10,7 +10,6 @@
 #define PIQP_SOLVER_HPP
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
-#include <cstdio>
 
 #include "piqp/common.hpp"
 #include "piqp/dense/data.hpp"
