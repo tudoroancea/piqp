@@ -80,8 +80,7 @@ protected:
     Vec<T> ds_ub;
 
 public:
-    SolverBase()
-    : m_kkt(m_data, m_settings) {};
+    SolverBase() : m_kkt(m_data, m_settings) {};
 
     ~SolverBase() {};
 
